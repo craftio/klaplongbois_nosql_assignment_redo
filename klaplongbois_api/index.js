@@ -18,3 +18,5 @@ server.use('/api', require('./routes/v1/routes_comment_v1'));
 server.listen(port, () => {
     console.log("Server is listening on port " + port);
 });
+
+module.exports = server;
