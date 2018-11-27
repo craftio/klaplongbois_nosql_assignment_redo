@@ -4,7 +4,7 @@
   "description": "A klaplong a day keeps the doctor away",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "nodemon --exec mocha -R min"
   },
   "author": "",
   "license": "ISC",

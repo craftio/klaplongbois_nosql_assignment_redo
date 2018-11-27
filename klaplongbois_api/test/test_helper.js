@@ -11,26 +11,25 @@ mongoose.Promise = global.Promise;
 
 const CONNECTION_STRING = 'mongodb+srv://Delete:88mpk@btaks-avans-1-20iox.mongodb.net/test?retryWrites=true';
 
-//before((done) => {
+before((done) => {
     mongoose.connect(CONNECTION_STRING, {useNewUrlParser: true});
     mongoose.connection
         .once('open', () => {
             console.log('Good to go!');
-            //done();
+            done();
         })
         .on('error', (error) => {
             console.warn('Warning', error);
         });
-//});
-/**
+});
+
 beforeEach((done) => {
     const { users, threads, comments } = mongoose.connection.collections;
     users.drop(() => {
-        threads.drop(() => {
-            comments.drop(() => {
+        //threads.drop(() => {
+            //comments.drop(() => {
                 done();
-            })
-        })
-    })
-})
- */
+            });
+        //});
+    //});
+});
