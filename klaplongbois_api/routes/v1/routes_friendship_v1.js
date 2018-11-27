@@ -6,4 +6,7 @@ server.get("/", (req, res) => {
     res.send("test friendship routes v1");
 });
 
+server.get("/friendships", (req, res) => {
+    res.status(200);
+
 module.exports = (server);
