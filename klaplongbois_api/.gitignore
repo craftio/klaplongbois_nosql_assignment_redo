@@ -173,6 +173,9 @@ fabric.properties
 # Sonarlint plugin
 .idea/sonarlint
 
+klaplongbois_api/.idea/workspace.xml
+klaplongbois_api/package-lock.json
+
 ### Windows ###
 # Windows thumbnail cache files
 Thumbs.db
