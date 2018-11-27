@@ -14,7 +14,6 @@ server.get("/", (req, res) => {
 
 // Get all friendships
 server.get("/friendships", (req, res) => {
-    console.log("GET /api/friendships");
     res.status(200);
     res.json(new jsonModel("GET /api/friendships", 200, "test"));
 });
