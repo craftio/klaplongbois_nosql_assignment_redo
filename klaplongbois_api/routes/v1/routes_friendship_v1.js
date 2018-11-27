@@ -1,5 +1,6 @@
 let express = require('express');
 let server  = express.Router();
+let jsonModel = require('../../model/JsonResponseModel');
 
 server.use("/", (req, res, next) => {
     res.contentType("application/json");
@@ -15,10 +16,7 @@ server.get("/", (req, res) => {
 server.get("/friendships", (req, res) => {
     console.log("GET /api/friendships");
     res.status(200);
-    res.json({
-        'statuscode': 200,
-        'message': 'get all friendships'
-    })
+    res.json(new jsonModel("GET /api/friendships", 200, "test"));
 });
 
 module.exports = (server);

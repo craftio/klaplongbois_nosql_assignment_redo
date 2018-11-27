@@ -173,8 +173,8 @@ fabric.properties
 # Sonarlint plugin
 .idea/sonarlint
 
-klaplongbois_api/.idea/workspace.xml
-klaplongbois_api/package-lock.json
+**/.idea/workspace.xml
+**/.idea/tasks.xml
 
 ### Windows ###
 # Windows thumbnail cache files
