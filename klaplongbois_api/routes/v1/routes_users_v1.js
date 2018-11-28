@@ -46,13 +46,12 @@ server.put("/users", (req, res) => {
     let username = req.body.name;
     let currentPassword = req.body.password;
     let newPassword = req.body.newPassword;
+
     try {
         console.log("UPDATE MOFUCKER!");
         user.changePassword(username, currentPassword, newPassword, res);
-        console.log(username);
     } catch (error) {
         res.json(error);
-
     }
 
 
@@ -65,7 +64,6 @@ server.delete("/users", (req, res) => {
 
     try {
         user.deleteUser(username, password, res);
-        // res.json(new jsonModel("/api/user/:userId", "DELETE", 401, "delete a specific user"));
     } catch (error) {
         res.json(error);
     }

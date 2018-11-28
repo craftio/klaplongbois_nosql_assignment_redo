@@ -28,8 +28,7 @@ static createUser(username, password, response) {
                 const newUser = new User({username: username, password: password});
                 newUser.save()
                     .then(() => {
-                        console.log("User " + username + " has been succesfully created.");
-                        response.status(201).json({username: username});
+                        response.status(201).json(new jsonModel("/api//users", "POST", 201, "User " + username + " has been succesfully created."));
                     })
                     .catch(() => {
                         console.log("Something went wrong. User " + user + " has not been created.");
@@ -47,7 +46,7 @@ static createUser(username, password, response) {
 static changePassword(username, currentPassword, newPassword, response) {
     User.findOne({username})
         .then((user) => {
-            if(user.password === password) {
+            if(user.password === currentPassword) {
                 user.set({password: newPassword});
                 user.save()
                     .then(() => {
