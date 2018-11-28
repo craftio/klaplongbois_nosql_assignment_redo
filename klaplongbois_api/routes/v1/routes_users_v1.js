@@ -1,6 +1,9 @@
 let express = require('express');
 let server  = express.Router();
 let jsonModel = require('../../model/JsonResponseModel');
+let mongoose = require('mongoose');
+let user = require('../../src/user');
+
 
 server.use("/", (req, res, next) => {
     res.contentType("application/json");
@@ -27,11 +30,21 @@ server.get("/users/:userId", (req, res) => {
 });
 
 // Create a user
-server.post("/users/:userId", (req, res) => {
-    let id = req.param("userId");
+server.post("/users", (req, res) => {
+    let name = req.body.name;
+    let password = req.body.password;
 
     try {
-        res.json(new jsonModel("/api/user/:userId", "POST", 200, "create a user"));
+        // if (name.length === 0) {
+        //     res.status(400);
+        //     res.json(new jsonModel("/users", "POST", 400, "Please enter a username"));
+        // } else if (password.length === 0) {
+        //     res.status(400);
+        //     res.json(new jsonModel("/users", "POST", 400, "Please enter a password"));
+        // } else {
+            user.collection.insert({name: name, password: password});
+            res.json(new jsonModel("/api/user/", "POST", 200, "created a user"));
+        // }
     } catch (error) {
         res.json(error);
     }

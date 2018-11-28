@@ -38,11 +38,15 @@ mongoose.connect(CONNECTION_STRING, {useNewUrlParser: true}, (err, client) =>{
 
 let express = require('express');
 let server = express();
+let bodyParser = require('body-parser');
 const port = process.env.PORT || 3000;
+
+server.use(bodyParser.json());
 
 server.get("/", (req, res, next) => {
     res.send("Welcome to the klaplongbois api");
 });
+
 
 // Load the user routes
 server.use('/api', require('./routes/v1/routes_users_v1'));
