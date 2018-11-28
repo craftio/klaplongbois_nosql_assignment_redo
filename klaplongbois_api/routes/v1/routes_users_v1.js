@@ -35,16 +35,7 @@ server.post("/users", (req, res) => {
     let password = req.body.password;
 
     try {
-        // if (name.length === 0) {
-        //     res.status(400);
-        //     res.json(new jsonModel("/users", "POST", 400, "Please enter a username"));
-        // } else if (password.length === 0) {
-        //     res.status(400);
-        //     res.json(new jsonModel("/users", "POST", 400, "Please enter a password"));
-        // } else {
-            user.collection.insert({name: name, password: password});
-            res.json(new jsonModel("/api/user/", "POST", 200, "created a user"));
-        // }
+        user.createUser(name, password, res);
     } catch (error) {
         res.json(error);
     }
