@@ -1,7 +1,7 @@
 module.exports = class apiError {
-    constructor(message, code){
+    constructor(message, statuscode){
         this.message = message;
-        this.code = code;
-        this.datetime = new Date().toISOString();
+        this.statuscode = statuscode;
+        this.datetime = new Date().toUTCString();
     }
 };

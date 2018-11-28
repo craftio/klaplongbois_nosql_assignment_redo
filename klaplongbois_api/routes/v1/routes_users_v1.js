@@ -41,24 +41,31 @@ server.post("/users", (req, res) => {
     }
 });
 
-// Update specific user
-server.put("/users/:userId", (req, res) => {
-    let id = req.param("userId");
+// Change password
+server.put("/users", (req, res) => {
+    let username = req.body.name;
+    let currentPassword = req.body.password;
+    let newPassword = req.body.newPassword;
     try {
-        res.json(new jsonModel("/api/user/:userId", "PUT", 200, "update a specific user"));
+        console.log("UPDATE MOFUCKER!");
+        user.changePassword(username, currentPassword, newPassword, res);
+        console.log(username);
     } catch (error) {
         res.json(error);
+
     }
 
 
 });
 
 // Delete specific user
-server.delete("/users/:userId", (req, res) => {
-    let id = req.params.userId;
+server.delete("/users", (req, res) => {
+    let username = req.body.name;
+    let password = req.body.password;
 
     try {
-        res.json(new jsonModel("/api/user/:userId", "DELETE", 401, "delete a specific user"));
+        user.deleteUser(username, password, res);
+        // res.json(new jsonModel("/api/user/:userId", "DELETE", 401, "delete a specific user"));
     } catch (error) {
         res.json(error);
     }
