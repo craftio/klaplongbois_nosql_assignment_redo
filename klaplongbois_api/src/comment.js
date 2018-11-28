@@ -1,12 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-var CommentSchema = new Schema();
-CommentSchema.add({
-    postedBy: {
-        type: Schema.Types.ObjectId,
-        ref: 'user'
-    },
+const CommentSchema = new Schema({
     content: String,
     upvotes: [{
         type: Schema.Types.ObjectId,
@@ -16,7 +11,7 @@ CommentSchema.add({
         type: Schema.Types.ObjectId,
         ref: 'user'
     }],
-    comments: [CommentSchema]
+    comments: [ this ]
 });
 
 CommentSchema.pre('remove', function(next) {

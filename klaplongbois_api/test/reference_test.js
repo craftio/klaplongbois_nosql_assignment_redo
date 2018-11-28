@@ -18,12 +18,11 @@ describe('References', () => {
             title: 'Awesome Title',
             content: 'Awesome content',
             upvotes: [],
-            downvotes: []
+            downvotes: [],
+            comments: []
         });
 
         testComment = new Comment({
-            postedBy: creator,
-            onThread: testThread,
             content: 'Hello Thread',
             upvotes: [],
             downvotes: [],
