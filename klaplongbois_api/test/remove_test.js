@@ -1,7 +1,7 @@
 const assert = require('assert');
-const User = require('../src/user');
-const Thread = require('../src/thread');
-const Comment = require('../src/comment');
+const User = require('../models/user');
+const Thread = require('../models/thread');
+const Comment = require('../models/comment');
 
 describe('Removal of records', () => {
     let creator, testThread, testComment, testReply, testReplyToReply;
@@ -59,7 +59,7 @@ describe('Removal of records', () => {
 
     it('When a thread is removed, all the underlying comments get removed.', (done) => {
         Thread.findOneAndDelete({ title: 'Awesome Title' })
-            .then(() => Comment.findOne({ _id: testReplyToReply.ObjectId }))
+            .then(() => Comment.findOne({ _id: testComment.ObjectId }))
             .then((comment) => {
                 assert(comment === null);
                 done();

@@ -11,13 +11,16 @@ const CommentSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'user'
     }],
-    comments: [ this ]
+    comments: {
+        type: this,
+        ref: 'comment'
+    }
 });
 
 CommentSchema.pre('remove', function(next) {
     const Replies = mongoose.model('comment');
-    Replies.remove({ _id: { $in: this.comments } })
-        .then(() => next());
+    Replies.remove({ _id: { $in: this.comments } });
+    next();
 });
 
 const Comment = mongoose.model('comment', CommentSchema);

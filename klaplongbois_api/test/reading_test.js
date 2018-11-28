@@ -1,9 +1,9 @@
 const assert = require('assert');
-const User = require('../src/user');
-const Thread = require('../src/thread');
-const Comment = require('../src/comment');
+const User = require('../models/user');
+const Thread = require('../models/thread');
+const Comment = require('../models/comment');
 
-describe('Removal of records', () => {
+describe('Reading records', () => {
     let creator, testThread, testComment, testReply, testReplyToReply;
 
     beforeEach((done) => {
@@ -60,7 +60,7 @@ describe('Removal of records', () => {
                 path: 'comments',
                 populate: {
                     path: 'comments',
-                    model: 'comment',
+                    model: 'comment'
                 }
             })
             .then((thread) => {

@@ -14,6 +14,14 @@ const UserSchema = new Schema({
     }]
 });
 
+const autoPopulateChildren = function(next) {
+    this.populate('comment');
+    next();
+};
+
+UserSchema.pre('findOne', autoPopulateChildren);
+UserSchema.pre('find', autoPopulateChildren);
+
 const User = mongoose.model('user', UserSchema);
 
 module.exports = User;
