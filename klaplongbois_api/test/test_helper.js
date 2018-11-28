@@ -26,10 +26,10 @@ before((done) => {
 beforeEach((done) => {
     const { users, threads, comments } = mongoose.connection.collections;
     users.drop(() => {
-        //threads.drop(() => {
-            //comments.drop(() => {
+        threads.drop(() => {
+            comments.drop(() => {
                 done();
             });
-        //});
-    //});
+        });
+    });
 });
