@@ -2,7 +2,8 @@ let express = require('express');
 let server  = express.Router();
 let jsonModel = require('../../model/JsonResponseModel');
 let mongoose = require('mongoose');
-let user = require('../../src/user');
+// let user = require('../../src/user');
+let user = require('../../data/userRepo');
 
 
 server.use("/", (req, res, next) => {
