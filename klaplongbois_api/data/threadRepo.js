@@ -6,6 +6,32 @@ const jsonModel = require('../model/JsonResponseModel');
 
 module.exports = class StudditThread {
 
+    static getSingleThread(id, res) {
+        User.find().populate({
+            path: "threads",
+            populate: {
+                path: "comments",
+                model: "comment"
+            }
+        })
+            .then((users) => {
+                for (let user of users) {
+                    if (user.threads) {
+                        for (let thread of user.threads) {
+                            if (thread.id == id) {
+                                res.status(200).json({"thread": thread, "createdBy": user.username});
+                            }
+                        }
+                    } else {
+                        res.status(404).json(ApiErrors.notFound());
+                    }
+                }
+            })
+            .catch(() => {
+                res.status(404).json(ApiErrors.notFound());
+            });
+    }
+
     static getAllThreads(res) {
         let threadArray = [];
         User.find().populate("threads")

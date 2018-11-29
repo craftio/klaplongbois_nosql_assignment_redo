@@ -23,9 +23,7 @@ server.get("/threads", (req, res) => {
 server.get("/threads/:threadId", (req, res) => {
     let threadId = req.params.threadId;
     try {
-
-        res.status(200);
-        res.json(new jsonModel("/api/threads/threadId", "GET", 200));
+        thread.getSingleThread(threadId, res);
     } catch (error) {
         res.json(error);
     }
