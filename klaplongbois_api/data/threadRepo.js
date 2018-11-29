@@ -59,27 +59,34 @@ module.exports = class StudditThread {
     }
 
     static createThread(title, content, usernameParam, res) {
-        const newThread = new Thread({
-            title: title,
-            content: content
-        });
+        console.log(title.toString() + ' - ' + content.toString() + ' - ' + usernameParam.toString());
 
         let myUser = User;
         myUser.findOne({ username: usernameParam })
             .then((user) => {
-                user.threads.push(newThread);
-                Promise.all([user.save(), newThread.save()])
-                // user.save()
-                    .then(() => {
-                        // newThread.save();
-                        res.status(201).json(new jsonModel("/api/threads", "POST", 201, "The thread has been succesfully created."));
-                    })
-                    .catch(() => {
-                        res.status(500).json(ApiErrors.internalServerError());
-                    })
+                if (user !== null && user !== undefined) {
+                    const newThread = new Thread({
+                        title: title,
+                        content: content
+                    });
+
+                    user.threads.push(newThread);
+                    Promise.all([user.save(), newThread.save()])
+                    // user.save()
+                        .then(() => {
+                            // newThread.save();
+                            res.status(201).json(new jsonModel("/api/threads", "POST", 201, "The thread has been succesfully created."));
+                        })
+                        .catch(() => {
+                            res.status(500).json(ApiErrors.internalServerError());
+                        })
+                } else {
+                    console.log('none');
+                    res.status(404).json(ApiErrors.notFound(usernameParam));
+                }
             })
             .catch(() => {
-                res.status(404).json(ApiErrors.notFound(username));
+                res.status(404).json(ApiErrors.notFound(usernameParam));
             })
     };
 

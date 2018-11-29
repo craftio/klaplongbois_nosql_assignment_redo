@@ -49,10 +49,9 @@ server.post("/threads", (req, res) => {
 
 // Update a specific thread
 server.put("/threads/:id", (req, res) => {
-   let threadId = req.params.id;
+   let threadId = req.params.threadId;
    let newContent = req.params.newContent;
    try {
-
        thread.updateThread(threadId, newContent, res);
    } catch (error) {
        res.json(error);
@@ -61,11 +60,14 @@ server.put("/threads/:id", (req, res) => {
 
 // Delete a specific thread
 server.delete("/threads/:Id", (req, res) => {
-    let threadId = req.params.Id;
-    let username = req.body.name;
+    let threadId = req.params.threadId;
+    let username = req.body.username;
     try {
-
-        thread.deleteThread(threadId, username, res);
+        if (checkNullOrUndefined(threadId) && checkNullOrUndefined(username)) {
+            thread.deleteThread(threadId, username, res);
+        } else {
+            res.json(new jsonModel("/api/user", "POST", 400, "Missing at least one of mandatory fields 'threadId' and 'username'"));
+        }
     } catch (error) {
         res.json(error);
     }
