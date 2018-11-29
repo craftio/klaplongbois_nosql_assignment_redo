@@ -1,9 +1,11 @@
 let express = require('express');
 let server  = express.Router();
 let jsonModel = require('../../model/JsonResponseModel');
+let Comment = require('../../data/commentRepo');
 
-server.use("/", (req, res) => {
+server.use("/", (req, res, next) => {
     res.contentType("application/json");
+    next();
 });
 
 // Get all comments
@@ -29,12 +31,12 @@ server.get("/comments/:commentId", (req, res) => {
 });
 
 // Create a comment
-server.post("/comments/:commentId", (req, res) => {
-   let commentId = req.params.commentId;
+server.post("/comments/:threadId", (req, res) => {
+   let id = req.params.threadId;
+   let username = req.body.name;
    try {
+       Comment.addComment(id, "MYCOMMENT", username, res);
 
-       res.status(200);
-       res.json(new jsonModel("/api/comments/commentId", "POST", 200));
    } catch (error) {
        res.json(error);
    }
