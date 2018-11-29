@@ -17,7 +17,7 @@ MongoClient.connect(uri, function(err, client) {
 const DATABASE_NAME = 'klaplongbois_studdit';
 const CONNECTION_STRING = 'mongodb+srv://Delete:88mpk@btaks-avans-1-20iox.mongodb.net/' + DATABASE_NAME + '?retryWrites=true';
 
-mongoose.connect('mongodb://localhost/users',
+mongoose.connect(CONNECTION_STRING,
     {useNewUrlParser: true});
 
 // /**
