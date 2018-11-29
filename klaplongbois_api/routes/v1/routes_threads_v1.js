@@ -58,13 +58,12 @@ server.put("/threads/:id", (req, res) => {
 });
 
 // Delete a specific thread
-server.delete("/threads/:threadId", (req, res) => {
-    let threadId = req.params.threadId;
+server.delete("/threads/:Id", (req, res) => {
+    let threadId = req.params.Id;
+    let username = req.body.name;
     try {
 
-
-        res.status(200);
-        res.json(new jsonModel("/api/threads/threadId", "DELETE", 200))
+        thread.deleteThread(threadId, username, res);
     } catch (error) {
         res.json(error);
     }

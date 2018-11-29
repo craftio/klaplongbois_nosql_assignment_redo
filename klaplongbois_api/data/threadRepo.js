@@ -1,5 +1,6 @@
 const User = require('../src/user');
 const Thread = require('../src/thread');
+const Comment = require('../src/comment');
 const ApiErrors = require('../model/apiErrors');
 const jsonModel = require('../model/JsonResponseModel');
 
@@ -46,4 +47,32 @@ module.exports = class StudditThread {
             res.status(404).json(ApiErrors.notFound(id));
         })
     };
+
+    static deleteThread(id, username, res) {
+        let myThread = Thread;
+        myThread.findOne({_id: id})
+            .then((thread) => {
+                if (thread) {
+
+                    thread.remove()
+                        .then(() => {
+                            User.findOneAndUpdate({ username }, { $pull: { "threads": id } })
+                                .then(() => {
+                                    console.log("Thread deleted from user")
+                                })
+
+                                .catch(() => {
+                                    res.status(500).json(ApiErrors.internalServerError());
+                                })
+                        });
+                res.status(200).json(new jsonModel("/api/threads/" + id, "DELETE", 200, "Thread removed"))
+                } else {
+                    res.status(404).json(ApiErrors.notFound(id));
+                }
+            })
+            .catch(() => {
+                res.status(404).json(ApiErrors.notFound(id));
+            })
+    }
+
 };

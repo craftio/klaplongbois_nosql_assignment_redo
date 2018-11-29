@@ -1,8 +1,24 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-var CommentSchema = new Schema();
-CommentSchema.add({
+// var CommentSchema = new Schema();
+// CommentSchema.add({
+//     postedBy: {
+//         type: Schema.Types.ObjectId,
+//         ref: 'user'
+//     },
+//     content: String,
+//     upvotes: [{
+//         type: Schema.Types.ObjectId,
+//         ref: 'user'
+//     }],
+//     downvotes: [{
+//         type: Schema.Types.ObjectId,
+//         ref: 'user'
+//     }],
+//     comments: [CommentSchema]
+// });
+const CommentSchema = new Schema({
     postedBy: {
         type: Schema.Types.ObjectId,
         ref: 'user'
@@ -15,9 +31,11 @@ CommentSchema.add({
     downvotes: [{
         type: Schema.Types.ObjectId,
         ref: 'user'
-    }],
-    comments: [CommentSchema]
+    }]
+    // ,
+    // comments: [CommentSchema]
 });
+
 
 CommentSchema.pre('remove', function(next) {
     const Replies = mongoose.model('comment');
