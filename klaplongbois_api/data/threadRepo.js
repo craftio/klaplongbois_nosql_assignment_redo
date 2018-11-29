@@ -29,6 +29,21 @@ module.exports = class StudditThread {
             .catch(() => {
                 res.status(404).json(ApiErrors.notFound(username));
             })
+    };
 
+    static updateThread(id, newContent, res) {
+        let myThread = Thread;
+        myThread.findOne({_id: id})
+            .then((thread) => {
+                thread.content = newContent;
+                thread.save();
+            }).then(() => {
+            res.status(200).json(new jsonModel("/api/threads", "PUT", 200, "The thread has been succesfully updated."));
+        })
+            .catch(() => {
+                res.status(500).json(ApiErrors.internalServerError());
+            }).catch(() => {
+            res.status(404).json(ApiErrors.notFound(id));
+        })
     };
 };

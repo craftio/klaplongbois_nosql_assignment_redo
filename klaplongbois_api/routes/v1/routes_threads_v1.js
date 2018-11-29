@@ -46,12 +46,12 @@ server.post("/threads", (req, res) => {
 });
 
 // Update a specific thread
-server.put("/threads/:threadId", (req, res) => {
-   let threadId = req.params.threadId;
+server.put("/threads/:id", (req, res) => {
+   let threadId = req.params.id;
+   let newContent = req.params.newContent;
    try {
 
-       res.status(200);
-       res.json(new jsonModel("/api/threads/threadId", "PUT", 200));
+       thread.updateThread(threadId, newContent, res);
    } catch (error) {
        res.json(error);
    }
