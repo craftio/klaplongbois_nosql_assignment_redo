@@ -7,6 +7,10 @@ const jsonModel = require('../model/JsonResponseModel');
 module.exports = class StudditThread {
 
     static getSingleThread(id, res) {
+        let singleThreadArray = [];
+        let commentArray = [];
+        let replyArray = [];
+
         User.find().populate({
             path: "threads",
             populate: {
@@ -19,7 +23,15 @@ module.exports = class StudditThread {
                     if (user.threads) {
                         for (let thread of user.threads) {
                             if (thread.id == id) {
-                                res.status(200).json({"thread": thread, "createdBy": user.username});
+                                singleThreadArray.push({
+                                    "_id": thread.id,
+                                    "title": thread.title,
+                                    "content": thread.content,
+                                    "upvotes": thread.upvotes.length,
+                                    "downvotes": thread.downvotes.length,
+                                    "createdBy": user.username
+                                });
+                                res.status(200).json({"thread": singleThreadArray, "comments": thread.comments});
                             }
                         }
                     } else {
@@ -43,9 +55,8 @@ module.exports = class StudditThread {
                                 "_id": thread.id,
                                 "title": thread.title,
                                 "content": thread.content,
-                                "upvotes": thread.upvotes,
-                                "downvotes": thread.downvotes,
-                                "comments": thread.comments,
+                                "upvotes": thread.upvotes.length,
+                                "downvotes": thread.downvotes.length,
                                 "createdBy": user.username
                             })
                         }
@@ -59,8 +70,6 @@ module.exports = class StudditThread {
     }
 
     static createThread(title, content, usernameParam, res) {
-        console.log(title.toString() + ' - ' + content.toString() + ' - ' + usernameParam.toString());
-
         let myUser = User;
         myUser.findOne({ username: usernameParam })
             .then((user) => {
@@ -92,9 +101,9 @@ module.exports = class StudditThread {
 
     static updateThread(id, newContent, res) {
         let myThread = Thread;
-        myThread.findOne({_id: id})
+        myThread.findOne({ _id: id.toString() })
             .then((thread) => {
-                thread.content = newContent;
+                thread.set({ content: newContent });
                 thread.save();
             }).then(() => {
             res.status(200).json(new jsonModel("/api/threads", "PUT", 200, "The thread has been succesfully updated."));
@@ -108,7 +117,7 @@ module.exports = class StudditThread {
 
     static deleteThread(id, username, res) {
         let myThread = Thread;
-        myThread.findOne({_id: id})
+        myThread.findOne({ _id: id })
             .then((thread) => {
                 if (thread) {
                     thread.remove()

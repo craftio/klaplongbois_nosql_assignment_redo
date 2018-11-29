@@ -18,6 +18,12 @@ const ThreadSchema = new Schema({
     }]
 });
 
+/**
+ThreadSchema.virtual('upvotes').get(function() {
+    return this.upvotes.length;
+});
+ */
+
 ThreadSchema.pre('remove', function(next) {
     const Comment = mongoose.model('comment');
     Comment.remove({ _id: { $in: this.comments } })

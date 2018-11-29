@@ -49,10 +49,14 @@ server.post("/threads", (req, res) => {
 
 // Update a specific thread
 server.put("/threads/:id", (req, res) => {
-   let threadId = req.params.threadId;
-   let newContent = req.params.newContent;
+   let threadId = req.body.threadId;
+   let newContent = req.body.newContent;
    try {
-       thread.updateThread(threadId, newContent, res);
+       if (checkNullOrUndefined(threadId) && checkNullOrUndefined(newContent)) {
+           thread.updateThread(threadId, newContent, res);
+       } else {
+           res.json(new jsonModel("/api/user", "POST", 400, "Missing at least one of mandatory fields 'threadId' and 'newContent'"));
+       }
    } catch (error) {
        res.json(error);
    }
