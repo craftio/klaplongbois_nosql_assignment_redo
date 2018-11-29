@@ -13,8 +13,7 @@ server.use("/", (req, res, next) => {
 server.get("/threads", (req, res) => {
     try {
 
-        res.status(200);
-        res.json(new jsonModel("/api/threads", "GET", 200));
+        thread.getAllThreads(res);
     } catch (error) {
         res.json(error);
     }
