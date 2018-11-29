@@ -1,7 +1,7 @@
 const assert = require('assert');
-const User = require('../models/user');
-const Thread = require('../models/thread');
-const Comment = require('../models/comment');
+const User = require('../src/user');
+const Thread = require('../src/thread');
+const Comment = require('../src/comment');
 
 describe('Removal of records', () => {
     let creator, testThread, testComment, testReply, testReplyToReply;

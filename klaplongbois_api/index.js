@@ -47,6 +47,9 @@ server.get("/", (req, res, next) => {
     res.send("Welcome to the klaplongbois api");
 });
 
+server.get("/", (req, res, next) => {
+    res.send("Welcome to the klaplongbois api");
+});
 
 // Load the user routes
 server.use('/api', require('./routes/v1/routes_users_v1'));
