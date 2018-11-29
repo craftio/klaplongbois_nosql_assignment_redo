@@ -57,9 +57,62 @@ describe('Removal of records', () => {
             .then(() => done());
     });
 
+    it('Can remove a comment', (done) => {
+        Comment.findOneAndDelete({ content: 'Hello Thread' })
+            .then(() => Comment.findOne({ content: 'Hello Thread' }))
+            .then((comment) => {
+                assert(comment === null);
+                done();
+            });
+    });
+
+    it('Will not delete overlaying comments', (done) => {
+        Comment.findOneAndDelete({ content: 'Hello Thread Comment' })
+            .then(() => Comment.findOne({ content: 'Hello Thread' }))
+            .then((overlayingComment) => {
+                assert(overlayingComment.content === 'Hello Thread');
+            })
+            .then(() => Comment.findOne({ content: 'Hello Thread Comment' }))
+            .then((deletedComment) => {
+                assert(deletedComment === null);
+            })
+            .then(() => Comment.findOne({ content: 'Hello Thread Comment Reply' }))
+            .then((underlyingComment) => {
+                assert(underlyingComment === null);
+                done();
+            });
+    });
+
+    it('Can remove a user without removing threads', (done) => {
+        User.findOneAndDelete({ username: 'TheCreator' })
+            .then(() => Thread.findOne({ title: 'Awesome Title' }))
+            .then((thread) => {
+                assert(thread !== null);
+                done();
+            });
+    });
+
     it('When a thread is removed, all the underlying comments get removed.', (done) => {
         Thread.findOneAndDelete({ title: 'Awesome Title' })
-            .then(() => Comment.findOne({ _id: testComment.ObjectId }))
+            .then(() => Comment.findOne({ content: 'Hello Thread Comment Reply' }))
+            .then((comment) => {
+                assert(comment === null);
+                done();
+            });
+    });
+
+    it('Can remove everything', (done) => {
+        User.findOneAndDelete({ username: 'TheCreator' })
+            .then(() => User.findOne({ username: 'AssertMe' }))
+            .then((user) => {
+                assert(user === null);
+            })
+            .then(() => Thread.findOneAndDelete({ title: 'Awesome Title' }))
+            .then(() => Thread.findOne({ title: 'Awesome Title' }))
+            .then((thread) => {
+                assert(thread === null);
+            })
+            .then(() => Comment.findOne({ content: 'Hello Thread Comment Reply' }))     // NOTE: We check for a deeply nested comment here without deleting it beforehand.
             .then((comment) => {
                 assert(comment === null);
                 done();

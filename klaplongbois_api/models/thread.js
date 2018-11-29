@@ -24,6 +24,14 @@ ThreadSchema.pre('remove', function(next) {
         .then(() => next());
 });
 
+const autoPopulateChildren = function(next) {
+    this.populate('comment');
+    next();
+};
+
+ThreadSchema.pre('findOne', autoPopulateChildren);
+ThreadSchema.pre('find', autoPopulateChildren);
+
 const Thread = mongoose.model('thread', ThreadSchema);
 
 module.exports = Thread;

@@ -3,7 +3,7 @@ const User = require('../models/user');
 const Thread = require('../models/thread');
 const Comment = require('../models/comment');
 
-describe('References', () => {
+xdescribe('References', () => {
     let creator, testThread;
 
     beforeEach((done) => {

@@ -19,7 +19,8 @@ const CommentSchema = new Schema({
 
 CommentSchema.pre('remove', function(next) {
     const Replies = mongoose.model('comment');
-    Replies.remove({ _id: { $in: this.comments } });
+    Replies.remove({ _id: { $in: this.comments } })
+        .then(() => Comment.remove({ _id: this._id }));
     next();
 });
 

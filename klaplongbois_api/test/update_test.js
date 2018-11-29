@@ -3,7 +3,7 @@ const User = require('../models/user');
 const Thread = require('../models/thread');
 const Comment = require('../models/comment');
 
-xdescribe('Reading records', () => {
+describe('Updating records', () => {
     let creator, testThread, testComment, testReply, testReplyToReply;
 
     beforeEach((done) => {
@@ -44,31 +44,24 @@ xdescribe('Reading records', () => {
         });
 
         creator.threads.push(testThread);
+        creator.comments.push(testComment);
+        creator.comments.push(testReply);
+        creator.comments.push(testReplyToReply);
 
         testThread.comments.push(testComment);
 
         testComment.comments.push(testReply);
         testReply.comments.push(testReplyToReply);
 
-        Promise.all([creator.save(), testThread.save(), testComment.save(), testReply.save(), testReplyToReply.save()])
+        Promise.all([creator.save(), testThread.save(), testComment.save()])
             .then(() => done());
     });
 
-    it('Can find users', (done) => {
-        User.findOne({ username: 'TheCreator' })
-            .then((user) => {
-                assert(user.password === 'AssertMe');
-                done();
-            });
-    });
-
-    it('Can find deeply nested reply', (done) => {
+    it('Can upvote a comment', (done) => {
         Thread.findOne({ title: 'Awesome Title' })
             .then((thread) => {
-                assert(thread.title === 'Awesome Title');
-                assert(thread.comments[0].content === 'Hello Thread');
-                assert(thread.comments[0].comments[0].content === 'Hello Thread Comment');
-                assert(thread.comments[0].comments[0].comments[0].content === 'Hello Thread Comment Reply');
+                thread.upvotes.push(creator);
+                assert(thread.upvotes.length === 1);
                 done();
             });
     });
