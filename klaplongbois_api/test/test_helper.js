@@ -9,7 +9,8 @@ const mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
 
-const CONNECTION_STRING = 'mongodb+srv://Delete:88mpk@btaks-avans-1-20iox.mongodb.net/test?retryWrites=true';
+const DATABASE_NAME = 'test';
+const CONNECTION_STRING = 'mongodb+srv://Delete:88mpk@btaks-avans-1-20iox.mongodb.net/' + DATABASE_NAME + '?retryWrites=true';
 
 before((done) => {
     mongoose.connect(CONNECTION_STRING, {useNewUrlParser: true});

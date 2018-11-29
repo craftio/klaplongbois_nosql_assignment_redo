@@ -31,11 +31,19 @@ server.get("/users/:userId", (req, res) => {
 
 // Create a user
 server.post("/users", (req, res) => {
-    let name = req.body.name;
+    let username = req.body.username;
     let password = req.body.password;
 
     try {
-        user.createUser(name, password, res);
+        if (username !== null && username !== undefined && password !== null && password !== undefined) {
+            user.createUser(username, password, res);
+        } else if (username !== null && username !== undefined) {
+            res.json(new jsonModel("/api/user", "POST", 400, "Missing mandatory field 'password'"));
+        } else if (password !== null && password !== undefined) {
+            res.json(new jsonModel("/api/user", "POST", 400, "Missing mandatory field 'username'"));
+        } else {
+            res.json(new jsonModel("/api/user", "POST", 400, "Missing mandatory fields 'username' and 'password'"));
+        }
     } catch (error) {
         res.json(error);
     }
