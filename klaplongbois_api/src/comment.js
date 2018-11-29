@@ -1,7 +1,12 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+// NOTE: watch for the use of [{}] as arrays of referenced documents and {} for single referenced documents (one-to-many relation).
 const CommentSchema = new Schema({
+    postedBy: {
+        type: Schema.Types.ObjectId,
+        ref: 'user'
+    },
     content: String,
     upvotes: [{
         type: Schema.Types.ObjectId,

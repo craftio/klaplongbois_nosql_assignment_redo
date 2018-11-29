@@ -126,7 +126,6 @@ module.exports = class StudditThread {
                                 .then(() => {
                                     console.log("Thread deleted from user")
                                 })
-
                                 .catch(() => {
                                     res.status(500).json(ApiErrors.internalServerError());
                                 })

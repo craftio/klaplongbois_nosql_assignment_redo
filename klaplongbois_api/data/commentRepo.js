@@ -6,25 +6,27 @@ const jsonModel = require('../model/JsonResponseModel');
 
 module.exports = class StudditComments {
 
-    static addComment(id, content, username, res) {
-
-        const newComment = new Comment({
-            postedBy: username._id,
-            content: content
-        });
-
-        User.findOne({username})
+    static addComment(id, content, usernameParam, res) {
+        User.findOne({ username: usernameParam })
             .then((user) => {
-                Thread.findOne({_id: id})
+                Thread.findOne({ _id: id })
                     .then((thread) => {
-                        thread.comments.push(newComment);
-                        Promise.all([user.save(), thread.save(), newComment.save()])
-                            .then(() => {
-                                res.status(201).json(new jsonModel("/api/comments", "POST", 201, "Comment has been succesfully created"));
-                            })
-                            .catch(() => {
-                                res.status(500).json(ApiErrors.internalServerError());
-                            })
+                        if (thread !== null && thread !== undefined) {
+                            const newComment = new Comment({
+                                postedBy: user,
+                                content: content
+                            });
+                            thread.comments.push(newComment);
+                            Promise.all([user.save(), thread.save(), newComment.save()])
+                                .then(() => {
+                                    res.status(201).json(new jsonModel("/api/comments", "POST", 201, "Comment has been succesfully created"));
+                                })
+                                .catch(() => {
+                                    res.status(500).json(ApiErrors.internalServerError());
+                                })
+                        } else {
+                            res.status(404).json(new jsonModel("/api/user", "POST", 404, "You can't comment on an non-existing thread."));
+                        }
                     })
                     .catch(() => {
                         res.status(404).json(ApiErrors.notFound());
@@ -52,3 +54,4 @@ module.exports = class StudditComments {
             })
     }
 };
+
