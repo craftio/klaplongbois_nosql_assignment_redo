@@ -16,6 +16,15 @@ const UserSchema = new Schema({
     }]
 });
 
+const autoPopulateChildren = function(next) {
+    this.populate('comments');
+    this.populate('threads');
+    next();
+};
+
+UserSchema.pre('findOne', autoPopulateChildren);
+UserSchema.pre('find', autoPopulateChildren);
+
 const User = mongoose.model('user', UserSchema);
 module.exports = User;
 
@@ -86,6 +95,3 @@ module.exports = User;
 //         });
 //     }
 // };
-
-
-

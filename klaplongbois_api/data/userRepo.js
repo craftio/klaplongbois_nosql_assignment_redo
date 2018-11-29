@@ -4,21 +4,29 @@ const jsonModel = require('../model/JsonResponseModel');
 
 module.exports = class StudditUser {
 
-    static createUser(username, password, response) {
-        User.findOne({username})
+    static createUser(usernameParam, passwordParam, response) {
+        console.log(usernameParam);
+        console.log(usernameParam.toString());
+        console.log(passwordParam);
+        console.log(passwordParam.toString());
+        console.log(response.toString());
+        User.findOne({ username: usernameParam })
             .then((user) => {
                 if (user === null) {
-                    const newUser = new User({username: username, password: password});
+                    const newUser = new User({
+                        username: usernameParam,
+                        password: passwordParam
+                    });
                     newUser.save()
-                        .then(() => {
-                            response.status(201).json(new jsonModel("/api/users", "POST", 201, "User " + username + " has been succesfully created."));
+                        .then((user) => {
+                            response.status(201).json(new jsonModel("/api/users", "POST", 201, "User " + user.username + " has been succesfully created."));
                         })
                         .catch((error) => {
                             console.log("Something went wrong. User " + user + " has not been created.");
                             response.status(500).json(ApiErrors.internalServerError());
                         })
                 } else {
-                    response.status(420).json(new jsonModel("/api/users", "POST", 420, "User " + username + " already exists"));
+                    response.status(420).json(new jsonModel("/api/users", "POST", 420, "User " + usernameParam + " already exists"));
                 }
             })
             .catch(() => {

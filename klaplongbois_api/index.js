@@ -13,18 +13,27 @@ MongoClient.connect(uri, function(err, client) {
     client.close();
 });
  */
+const DATABASE_NAME = 'klaplongbois_studdit';
+const CONNECTION_STRING = 'mongodb+srv://Delete:88mpk@btaks-avans-1-20iox.mongodb.net/' + DATABASE_NAME + '?retryWrites=true';
 
-const CONNECTION_STRING = 'mongodb+srv://Delete:88mpk@btaks-avans-1-20iox.mongodb.net/test?retryWrites=true';
+mongoose.connect(CONNECTION_STRING,
+    {useNewUrlParser: true});
 
-
-if(process.env.NODE_ENV == 'develop') {
+/**
+ * SEEMS TO BE WORKING INCORRECTLY
+ *
+if(process.env.NODE_ENV === 'develop') {
+    console.log('debug1');
     mongoose.connect(CONNECTION_STRING,
         {useNewUrlParser: true});
+    console.log('debug2');
+    console.log(process.env.NODE_ENV.toString());
 
 } else if(process.env.NODE_ENV !== 'develop') {
     mongoose.connect('mongodb://localhost/users',
         {useNewUrlParser: true});
 }
+ */
 
 
 /**
@@ -47,6 +56,9 @@ server.get("/", (req, res, next) => {
     res.send("Welcome to the klaplongbois api");
 });
 
+server.get("/", (req, res, next) => {
+    res.send("Welcome to the klaplongbois api");
+});
 
 // Load the user routes
 server.use('/api', require('./routes/v1/routes_users_v1'));
