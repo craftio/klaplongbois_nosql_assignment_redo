@@ -63,7 +63,7 @@ server.put("/threads/:id", (req, res) => {
 });
 
 // Delete a specific thread
-server.delete("/threads/:Id", (req, res) => {
+server.delete("/threads/:threadId", (req, res) => {
     let threadId = req.params.threadId;
     let username = req.body.username;
     try {

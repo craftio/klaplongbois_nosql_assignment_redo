@@ -7,6 +7,10 @@ const CommentSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'user'
     },
+    onThread: {
+        type: Schema.Types.ObjectId,
+        ref: 'thread'
+    },
     content: String,
     upvotes: [{
         type: Schema.Types.ObjectId,

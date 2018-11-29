@@ -6,6 +6,10 @@ const jsonModel = require('../model/JsonResponseModel');
 
 module.exports = class StudditComments {
 
+    static getSingleComment() {
+        
+    }
+
     static addComment(id, content, usernameParam, res) {
         User.findOne({ username: usernameParam })
             .then((user) => {
@@ -14,6 +18,7 @@ module.exports = class StudditComments {
                         if (thread !== null && thread !== undefined) {
                             const newComment = new Comment({
                                 postedBy: user,
+                                onThread: thread,
                                 content: content
                             });
                             thread.comments.push(newComment);
@@ -52,6 +57,10 @@ module.exports = class StudditComments {
                         res.status(500).json(ApiErrors.internalServerError());
                     })
             })
+    }
+
+    static deleteCommentsFromThread(threadId) {
+        Comment.findOneAndDelete({ onThread: { $in: threadId }});
     }
 };
 

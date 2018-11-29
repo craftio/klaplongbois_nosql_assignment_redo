@@ -3,6 +3,7 @@ const Thread = require('../src/thread');
 const Comment = require('../src/comment');
 const ApiErrors = require('../model/apiErrors');
 const jsonModel = require('../model/JsonResponseModel');
+const comment = require('./commentRepo');
 
 module.exports = class StudditThread {
 
@@ -124,7 +125,7 @@ module.exports = class StudditThread {
                         .then(() => {
                             User.findOneAndUpdate({ username }, { $pull: { "threads": id } })
                                 .then(() => {
-                                    console.log("Thread deleted from user")
+                                    comment.deleteCommentsFromThread(id);
                                 })
                                 .catch(() => {
                                     res.status(500).json(ApiErrors.internalServerError());
