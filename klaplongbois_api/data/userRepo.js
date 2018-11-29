@@ -29,11 +29,11 @@ module.exports = class StudditUser {
             });
     }
 
-    static changePassword(username, currentPassword, newPassword, response) {
-        User.findOne({username})
+    static changePassword(usernameParam, currentPassword, newPassword, response) {
+        User.findOne({ username: usernameParam })
             .then((user) => {
                 if(user.password === currentPassword) {
-                    user.set({password: newPassword});
+                    user.set({ password: newPassword });
                     user.save()
                         .then(() => {
                             response.status(200).json(new jsonModel("/api/users", "PUT", 200, "Your password has been succesfully changed."));

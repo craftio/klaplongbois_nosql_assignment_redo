@@ -35,12 +35,16 @@ server.post("/users", (req, res) => {
     let password = req.body.password;
 
     try {
-        if (username !== null && username !== undefined && password !== null && password !== undefined) {
+        // Both username and password are put in.
+        if (checkNullOrUndefined(username) && checkNullOrUndefined(password)) {
             user.createUser(username, password, res);
-        } else if (username !== null && username !== undefined) {
+        // The password field is missing.
+        } else if (checkNullOrUndefined(username)) {
             res.json(new jsonModel("/api/user", "POST", 400, "Missing mandatory field 'password'"));
-        } else if (password !== null && password !== undefined) {
+        // The username field is missing.
+        } else if (checkNullOrUndefined(password)) {
             res.json(new jsonModel("/api/user", "POST", 400, "Missing mandatory field 'username'"));
+        // Both fields are missing.
         } else {
             res.json(new jsonModel("/api/user", "POST", 400, "Missing mandatory fields 'username' and 'password'"));
         }
@@ -51,12 +55,28 @@ server.post("/users", (req, res) => {
 
 // Change password
 server.put("/users", (req, res) => {
-    let username = req.body.name;
-    let currentPassword = req.body.password;
+    let username = req.body.username;
+    let currentPassword = req.body.currentPassword;
     let newPassword = req.body.newPassword;
 
     try {
-        user.changePassword(username, currentPassword, newPassword, res);
+        if (checkNullOrUndefined(username) && checkNullOrUndefined(currentPassword) && checkNullOrUndefined(newPassword)) {
+            user.changePassword(username, currentPassword, newPassword, res);
+        } else if (checkNullOrUndefined(username) && checkNullOrUndefined(currentPassword)) {
+            res.json(new jsonModel("/api/user", "POST", 400, "Missing mandatory field 'newPassword'"));
+        } else if (checkNullOrUndefined(username) && checkNullOrUndefined(newPassword)) {
+            res.json(new jsonModel("/api/user", "POST", 400, "Missing mandatory field 'currentPassword'"));
+        } else if (checkNullOrUndefined(currentPassword) && checkNullOrUndefined(newPassword)) {
+            res.json(new jsonModel("/api/user", "POST", 400, "Missing mandatory field 'username'"));
+        } else if (checkNullOrUndefined(username)) {
+            res.json(new jsonModel("/api/user", "POST", 400, "Missing mandatory fields 'currentPassword' and 'newPassword'"));
+        } else if (checkNullOrUndefined(currentPassword)) {
+            res.json(new jsonModel("/api/user", "POST", 400, "Missing mandatory fields 'username' and 'newPassword'"));
+        } else if (checkNullOrUndefined(newPassword)) {
+            res.json(new jsonModel("/api/user", "POST", 400, "Missing mandatory fields 'username' and 'currentPassword'"));
+        } else {
+            res.json(new jsonModel("/api/user", "POST", 400, "Missing mandatory fields 'username', 'currentPassword' and 'newPassword'"));
+        }
     } catch (error) {
         res.json(error);
     }
@@ -66,14 +86,33 @@ server.put("/users", (req, res) => {
 
 // Delete specific user
 server.delete("/users", (req, res) => {
-    let username = req.body.name;
+    let username = req.body.username;
     let password = req.body.password;
 
     try {
-        user.deleteUser(username, password, res);
+        // Both username and password are put in.
+        if (checkNullOrUndefined(username) && checkNullOrUndefined(password)) {
+            user.deleteUser(username, password, res);
+        // The password field is missing.
+        } else if (checkNullOrUndefined(username)) {
+            res.json(new jsonModel("/api/user", "POST", 400, "Missing mandatory field 'password'"));
+        // The username field is missing.
+        } else if (checkNullOrUndefined(password)) {
+            res.json(new jsonModel("/api/user", "POST", 400, "Missing mandatory field 'username'"));
+        // Both fields are missing.
+        } else {
+            res.json(new jsonModel("/api/user", "POST", 400, "Missing mandatory fields 'username' and 'password'"));
+        }
     } catch (error) {
         res.json(error);
     }
 });
+
+function checkNullOrUndefined(param) {
+    if (param !== null && param !== undefined) {
+        return true;
+    }
+    return false;
+}
 
 module.exports = (server);
