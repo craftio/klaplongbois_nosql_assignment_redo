@@ -25,7 +25,7 @@ ThreadSchema.pre('remove', function(next) {
 });
 
 const autoPopulateChildren = function(next) {
-    this.populate('comment');
+    this.populate('comments');
     next();
 };
 
@@ -33,5 +33,16 @@ ThreadSchema.pre('findOne', autoPopulateChildren);
 ThreadSchema.pre('find', autoPopulateChildren);
 
 const Thread = mongoose.model('thread', ThreadSchema);
-
 module.exports = Thread;
+// module.exports =  class StudditThread {
+//
+//     static createThread(title, content, username, response) {
+//         const newThread = new Thread({
+//             title: title,
+//             content: content,
+//             upvotes: 0,
+//             downvotes: 0
+//         });
+//
+//     };
+// }''
