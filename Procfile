@@ -1,1 +1,1 @@
-web: cd klaplongbois_api && npm start
+web: npm start
