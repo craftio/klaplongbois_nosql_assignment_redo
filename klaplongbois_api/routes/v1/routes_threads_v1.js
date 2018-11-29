@@ -1,6 +1,8 @@
 let express = require('express');
 let server  = express();
 let jsonModel = require('../../model/JsonResponseModel');
+let mongoose = require('mongoose');
+let thread = require('../../data/threadRepo');
 
 server.use("/", (req, res, next) => {
     res.contentType('application/json');
@@ -31,12 +33,13 @@ server.get("/threads/:threadId", (req, res) => {
 });
 
 // Create a thread
-server.post("/threads/:threadId", (req, res) => {
-    let threadId = req.params.threadId;
-    try {
+server.post("/threads", (req, res) => {
+    let title = req.body.title;
+    let content = req.body.content;
+    let username = req.body.name;
 
-        res.status(200);
-        res.json(new jsonModel("/api/threads/threadId", "POST", 200));
+    try {
+        thread.createThread(title, content, username, res);
     } catch (error) {
         res.json(error);
     }

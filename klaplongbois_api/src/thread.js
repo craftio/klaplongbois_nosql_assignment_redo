@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const User = require('user');
 
 const ThreadSchema = new Schema({
     title: String,
@@ -26,7 +25,7 @@ ThreadSchema.pre('remove', function(next) {
 });
 
 const Thread = mongoose.model('thread', ThreadSchema);
-
+module.exports = Thread;
 // module.exports =  class StudditThread {
 //
 //     static createThread(title, content, username, response) {
@@ -39,4 +38,3 @@ const Thread = mongoose.model('thread', ThreadSchema);
 //
 //     };
 // }''
-module.exports = Thread;

@@ -13,7 +13,7 @@ module.exports = class StudditUser {
                         .then(() => {
                             response.status(201).json(new jsonModel("/api/users", "POST", 201, "User " + username + " has been succesfully created."));
                         })
-                        .catch(() => {
+                        .catch((error) => {
                             console.log("Something went wrong. User " + user + " has not been created.");
                             response.status(500).json(ApiErrors.internalServerError());
                         })

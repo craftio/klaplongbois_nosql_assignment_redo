@@ -2,7 +2,6 @@ let express = require('express');
 let server  = express.Router();
 let jsonModel = require('../../model/JsonResponseModel');
 let mongoose = require('mongoose');
-// let user = require('../../src/user');
 let user = require('../../data/userRepo');
 
 
@@ -49,7 +48,6 @@ server.put("/users", (req, res) => {
     let newPassword = req.body.newPassword;
 
     try {
-        console.log("UPDATE MOFUCKER!");
         user.changePassword(username, currentPassword, newPassword, res);
     } catch (error) {
         res.json(error);
