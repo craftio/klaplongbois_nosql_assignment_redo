@@ -58,15 +58,14 @@ module.exports = class StudditThread {
             });
     }
 
-    static createThread(title, content, username, res) {
-
+    static createThread(title, content, usernameParam, res) {
         const newThread = new Thread({
             title: title,
             content: content
         });
 
         let myUser = User;
-        myUser.findOne({username})
+        myUser.findOne({ username: usernameParam })
             .then((user) => {
                 user.threads.push(newThread);
                 Promise.all([user.save(), newThread.save()])
@@ -105,7 +104,6 @@ module.exports = class StudditThread {
         myThread.findOne({_id: id})
             .then((thread) => {
                 if (thread) {
-
                     thread.remove()
                         .then(() => {
                             User.findOneAndUpdate({ username }, { $pull: { "threads": id } })

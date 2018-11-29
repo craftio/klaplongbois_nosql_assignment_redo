@@ -33,10 +33,15 @@ server.get("/threads/:threadId", (req, res) => {
 server.post("/threads", (req, res) => {
     let title = req.body.title;
     let content = req.body.content;
-    let username = req.body.name;
+    let username = req.body.username;
 
     try {
-        thread.createThread(title, content, username, res);
+        // Checks for mandatory fields like in user, with a cleaner response to save in if else statements.
+        if (checkNullOrUndefined(title) && checkNullOrUndefined(content) && checkNullOrUndefined(username)) {
+            thread.createThread(title, content, username, res);
+        } else {
+            res.json(new jsonModel("/api/user", "POST", 400, "Missing at least one of mandatory fields 'title', 'content' and 'username'"));
+        }
     } catch (error) {
         res.json(error);
     }
@@ -66,6 +71,11 @@ server.delete("/threads/:Id", (req, res) => {
     }
 });
 
-
+function checkNullOrUndefined(param) {
+    if (param !== null && param !== undefined) {
+        return true;
+    }
+    return false;
+}
 
 module.exports = (server);
