@@ -6,6 +6,7 @@
  */
 
 const mongoose = require('mongoose');
+const driver = require('../neo4jdriver');
 
 mongoose.Promise = global.Promise;
 
@@ -29,7 +30,12 @@ beforeEach((done) => {
     users.drop(() => {
         threads.drop(() => {
             comments.drop(() => {
-                done();
+                let session = driver.session();
+                session.run('MATCH (n) DETACH DELETE n')
+                    .then(() => {
+                        session.close();
+                        done();
+                    });
             });
         });
     });

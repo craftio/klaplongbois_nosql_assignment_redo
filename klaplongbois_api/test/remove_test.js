@@ -3,7 +3,7 @@ const User = require('../src/user');
 const Thread = require('../src/thread');
 const Comment = require('../src/comment');
 
-describe('Removal of records', () => {
+xdescribe('Removal of records', () => {
     let creator, testThread, testComment, testReply, testReplyToReply;
 
     beforeEach((done) => {

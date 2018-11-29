@@ -7,7 +7,7 @@ const jsonModel = require('../model/JsonResponseModel');
 module.exports = class StudditComments {
 
     static getSingleComment() {
-        
+
     }
 
     static addComment(id, content, usernameParam, res) {
