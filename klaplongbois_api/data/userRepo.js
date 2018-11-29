@@ -5,11 +5,6 @@ const jsonModel = require('../model/JsonResponseModel');
 module.exports = class StudditUser {
 
     static createUser(usernameParam, passwordParam, response) {
-        console.log(usernameParam);
-        console.log(usernameParam.toString());
-        console.log(passwordParam);
-        console.log(passwordParam.toString());
-        console.log(response.toString());
         User.findOne({ username: usernameParam })
             .then((user) => {
                 if (user === null) {
