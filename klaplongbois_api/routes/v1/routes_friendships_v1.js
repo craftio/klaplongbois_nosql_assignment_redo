@@ -1,6 +1,7 @@
 let express = require('express');
 let server  = express.Router();
 let jsonModel = require('../../model/JsonResponseModel');
+let friendship = require('../../data/friendshipRepo');
 
 server.use("/", (req, res, next) => {
     res.contentType("application/json");
@@ -33,13 +34,12 @@ server.get("/friendships/:friendshipId", (req, res) => {
 });
 
 // Create a friendship
-server.post("/friendships/:friendshipId", (req, res) => {
-    let friendshipId = req.params.friendshipId;
+server.post("/friendships", (req, res) => {
+    let username = req.body.name;
+    let friendusername = req.body.friendname;
     try {
 
-
-        res.status(200);
-        res.json(new jsonModel("/api/friendships/friendshipId", "POST", 200, "test"));
+        friendship.createFriendship(username, friendusername, res);
     } catch (error) {
         res.json(error);
     }
@@ -58,12 +58,11 @@ server.put("/friendships/:friendshipId", (req,res) => {
 });
 
 // Delete a friendship
-server.delete("/friendships/:friendshipId", (req, res) => {
-    let friendshipId = req.params.friendshipId;
+server.delete("/friendships", (req, res) => {
+    let user = req.body.name;
+    let friend = req.body.friendname;
     try {
-
-        res.status(200);
-        res.json(new jsonModel("/api/friendships/friendshipId", "DELETE", 200, "test"));
+        friendship.deleteFriendship(user, friend, res);
     } catch (error) {
        res.json(error);
     }
