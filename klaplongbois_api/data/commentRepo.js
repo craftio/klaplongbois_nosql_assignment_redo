@@ -30,14 +30,14 @@ module.exports = class StudditComments {
                                     res.status(500).json(ApiErrors.internalServerError());
                                 })
                         } else {
-                            res.status(404).json(new jsonModel("/api/user", "POST", 404, "You can't comment on an non-existing thread."));
+                            res.status(409).json(new jsonModel("/api/user", "POST", 409, "You can't comment on an non-existing thread."));
                         }
                     })
                     .catch(() => {
                         res.status(404).json(ApiErrors.notFound());
                     })
                 .catch(() => {
-                    res.status(404).json(ApiErrors.notFound());
+                    res.status(422).json("/api/user", "POST", 422, "You can't comment on an non-existing thread.");
                 })
             })
     }
@@ -54,7 +54,7 @@ module.exports = class StudditComments {
                         }
                     )
                     .catch(() => {
-                        res.status(500).json(ApiErrors.internalServerError());
+                        res.status(422).json(new jsonModel("/api/comments/" + id, "DELETE", 422, "Comment not found"));
                     })
             })
     }

@@ -36,7 +36,7 @@ module.exports = class StudditThread {
                             }
                         }
                     } else {
-                        res.status(404).json(ApiErrors.notFound());
+                        res.status(422).json(new jsonModel("/api/threads", "GET", 422, "Thread does not exist"));
                     }
                 }
             })
@@ -82,21 +82,18 @@ module.exports = class StudditThread {
 
                     user.threads.push(newThread);
                     Promise.all([user.save(), newThread.save()])
-                    // user.save()
                         .then(() => {
-                            // newThread.save();
                             res.status(201).json(new jsonModel("/api/threads", "POST", 201, "The thread has been succesfully created."));
                         })
                         .catch(() => {
                             res.status(500).json(ApiErrors.internalServerError());
                         })
                 } else {
-                    console.log('none');
-                    res.status(404).json(ApiErrors.notFound(usernameParam));
+                    res.status(404).json(new jsonModel("/api/threads", "POST", 400, "Username can't be empty"));
                 }
             })
             .catch(() => {
-                res.status(404).json(ApiErrors.notFound(usernameParam));
+                res.status(422).json(new jsonModel("/api/threads", "POST", 422, "User " + usernameParam + " does not exist"));
             })
     };
 
@@ -112,7 +109,7 @@ module.exports = class StudditThread {
             .catch(() => {
                 res.status(500).json(ApiErrors.internalServerError());
             }).catch(() => {
-            res.status(404).json(ApiErrors.notFound(id));
+            res.status(422).json(new jsonModel("/api/threads", "PUT", 422, "Thread " + id + " does not exist"));
         })
     };
 
@@ -133,11 +130,11 @@ module.exports = class StudditThread {
                         });
                 res.status(200).json(new jsonModel("/api/threads/" + id, "DELETE", 200, "Thread removed"))
                 } else {
-                    res.status(404).json(ApiErrors.notFound(id));
+                    res.status(404).json(new jsonModel("/api/threads/" + id, "DELETE", 422, "Thread does not exist"));
                 }
             })
             .catch(() => {
-                res.status(404).json(ApiErrors.notFound(id));
+                res.status(404).json(new jsonModel("/api/threads/" + id, "DELETE", 422, "Thread does not exist"));
             })
     }
 

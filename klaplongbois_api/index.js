@@ -17,24 +17,24 @@ MongoClient.connect(uri, function(err, client) {
 const DATABASE_NAME = 'klaplongbois_studdit';
 const CONNECTION_STRING = 'mongodb+srv://Delete:88mpk@btaks-avans-1-20iox.mongodb.net/' + DATABASE_NAME + '?retryWrites=true';
 
-mongoose.connect(CONNECTION_STRING,
+mongoose.connect('mongodb://localhost/users',
     {useNewUrlParser: true});
 
-/**
- * SEEMS TO BE WORKING INCORRECTLY
- *
-if(process.env.NODE_ENV === 'develop') {
-    console.log('debug1');
-    mongoose.connect(CONNECTION_STRING,
-        {useNewUrlParser: true});
-    console.log('debug2');
-    console.log(process.env.NODE_ENV.toString());
+// /**
+//  * SEEMS TO BE WORKING INCORRECTLY
+//  *
+// if(process.env.NODE_ENV === 'develop') {
+//     console.log('debug1');
+//     mongoose.connect(CONNECTION_STRING,
+//         {useNewUrlParser: true});
+//     console.log('debug2');
+//     console.log(process.env.NODE_ENV.toString());
+//
+// } else if(process.env.NODE_ENV !== 'develop') {
+//     mongoose.connect('mongodb://localhost/users',
+//         {useNewUrlParser: true});
+// }
 
-} else if(process.env.NODE_ENV !== 'develop') {
-    mongoose.connect('mongodb://localhost/users',
-        {useNewUrlParser: true});
-}
- */
 
 
 /**

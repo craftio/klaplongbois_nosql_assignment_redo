@@ -21,7 +21,7 @@ module.exports = class StudditUser {
                             response.status(500).json(ApiErrors.internalServerError());
                         })
                 } else {
-                    response.status(420).json(new jsonModel("/api/users", "POST", 420, "User " + usernameParam + " already exists"));
+                    response.status(409).json(new jsonModel("/api/users", "POST", 409, "User " + usernameParam + " already exists"));
                 }
             })
             .catch(() => {
@@ -32,6 +32,7 @@ module.exports = class StudditUser {
     static changePassword(usernameParam, currentPassword, newPassword, response) {
         User.findOne({ username: usernameParam })
             .then((user) => {
+                console.log(user);
                 if(user.password === currentPassword) {
                     user.set({ password: newPassword });
                     user.save()
@@ -46,7 +47,7 @@ module.exports = class StudditUser {
                 }
             })
             .catch(() => {
-                response.status(404).json(ApiErrors.notFound(username));
+                response.status(422).json(new jsonModel("/api/users", "PUT", 422, "User " + usernameParam + " not found"));
             });
     };
 
@@ -68,7 +69,7 @@ module.exports = class StudditUser {
                 }
             })
             .catch(() => {
-                response.status(404).json(ApiErrors.notFound());
+                response.status(422).json(new jsonModel("/api/users", "DELETE", 422, "The user does not exist"));
             });
     }
 };

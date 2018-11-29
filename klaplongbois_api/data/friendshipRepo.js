@@ -16,7 +16,7 @@ module.exports = class StudditFriendship {
                 res.status(200).json(new jsonModel("/api/friendships", "POST", 200, "A friendship has been established between " + user + " and " + friend));
             })
             .catch((error) => {
-                res.status(500).json(ApiErrors.internalServerError());
+                res.status(422).json(new jsonModel("/api/friendships", "POST", 422,  user + " or " + friend + " does not exist"));
                 console.log(error);
             });
     }
@@ -33,7 +33,7 @@ module.exports = class StudditFriendship {
                 res.status(200).json(new jsonModel("/api/friendships", "DELETE", 200, user + " and " + friend + " are no longer friends"));
             })
             .catch((error) => {
-                res.status(500).json(ApiErrors.internalServerError());
+                res.status(422).json(new jsonModel("/api/friendships", "DELETE", 422, user + " or " + friend + " does not exist"));
                 console.log(error);
             });
 
