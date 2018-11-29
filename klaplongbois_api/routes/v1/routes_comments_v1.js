@@ -55,12 +55,13 @@ server.put("/comments/:commentId", (req, res) => {
 });
 
 // Delete a comment
-server.delete("/comments/:commentId", (req, res) => {
-   let commentId = req.params.commentId;
+server.delete("/comments/:threadId/:commentId", (req, res) => {
+    let threadId = req.params.threadId;
+    let commentId = req.params.commentId;
+
    try {
 
-       res.status(200);
-       res.json(new jsonModel("/api/comments/commentId", "DELETE", 200));
+       Comment.deleteComment(commentId, threadId, res);
    } catch (error) {
        res.json(error);
    }
