@@ -25,17 +25,21 @@ before((done) => {
         });
 });
 
+
 beforeEach((done) => {
     const { users, threads, comments } = mongoose.connection.collections;
     users.drop(() => {
         threads.drop(() => {
             comments.drop(() => {
+                /**
                 let session = driver.session();
                 session.run('MATCH (n) DETACH DELETE n')
                     .then(() => {
                         session.close();
                         done();
                     });
+                 */
+                done();
             });
         });
     });

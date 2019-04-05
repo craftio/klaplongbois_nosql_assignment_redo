@@ -28,7 +28,7 @@ module.exports = class StudditUser {
                 response.status(500).json(ApiErrors.internalServerError());
             });
     }
-
+    
     static changePassword(usernameParam, currentPassword, newPassword, response) {
         User.findOne({ username: usernameParam })
             .then((user) => {
