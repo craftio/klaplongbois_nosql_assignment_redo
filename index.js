@@ -16,13 +16,13 @@ server.get("/api", (req, res) => {
 });
 
 // Load the user routes
-server.use('/', require('./routes/v1/routes_users_v1'));
+server.use('/api', require('./routes/v1/routes_users_v1'));
 // Load the friendship routes
-server.use('/', require('./routes/v1/routes_friendships_v1'));
+server.use('/api', require('./routes/v1/routes_friendships_v1'));
 // Load the thread routes
-server.use('/', require('./routes/v1/routes_threads_v1'));
+server.use('/api', require('./routes/v1/routes_threads_v1'));
 // Load the comment routes
-server.use('/', require('./routes/v1/routes_comments_v1'));
+server.use('/api', require('./routes/v1/routes_comments_v1'));
 
 server.post("*", (req, res) => {
     res.status(404);
