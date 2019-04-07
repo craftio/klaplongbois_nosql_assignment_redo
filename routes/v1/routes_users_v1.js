@@ -10,6 +10,30 @@ server.use("/", (req, res, next) => {
     next();
 });
 
+// Create a user
+server.post("/users", (req, res) => {
+    let username = req.body.username;
+    let password = req.body.password;
+
+    try {
+        // Both username and password are put in.
+        if (checkNullOrUndefined(username) && checkNullOrUndefined(password)) {
+            user.createUser(username, password, res);
+            // The password field is missing.
+        } else if (checkNullOrUndefined(username)) {
+            res.json(new jsonModel("/api/user", "POST", 400, "Missing mandatory field 'password'"));
+            // The username field is missing.
+        } else if (checkNullOrUndefined(password)) {
+            res.json(new jsonModel("/api/user", "POST", 400, "Missing mandatory field 'username'"));
+            // Both fields are missing.
+        } else {
+            res.json(new jsonModel("/api/user", "POST", 400, "Missing mandatory fields 'username' and 'password'"));
+        }
+    } catch (error) {
+        res.json(error);
+    }
+});
+
 // Get all users
 server.get("/users", (req, res) => {
     try {
@@ -24,30 +48,6 @@ server.get("/users/:userId", (req, res) => {
     let id = req.param("userId");
     try {
     res.json(new jsonModel("/api/user/:id", "GET", 200, "get a specific user"));
-    } catch (error) {
-        res.json(error);
-    }
-});
-
-// Create a user
-server.post("/users", (req, res) => {
-    let username = req.body.username;
-    let password = req.body.password;
-
-    try {
-        // Both username and password are put in.
-        if (checkNullOrUndefined(username) && checkNullOrUndefined(password)) {
-            user.createUser(username, password, res);
-        // The password field is missing.
-        } else if (checkNullOrUndefined(username)) {
-            res.json(new jsonModel("/api/user", "POST", 400, "Missing mandatory field 'password'"));
-        // The username field is missing.
-        } else if (checkNullOrUndefined(password)) {
-            res.json(new jsonModel("/api/user", "POST", 400, "Missing mandatory field 'username'"));
-        // Both fields are missing.
-        } else {
-            res.json(new jsonModel("/api/user", "POST", 400, "Missing mandatory fields 'username' and 'password'"));
-        }
     } catch (error) {
         res.json(error);
     }

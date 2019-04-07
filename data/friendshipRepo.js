@@ -1,4 +1,4 @@
-const neo4j = require('../neo4jdriver');
+const neo4j = require('../connections/neo4jdriver');
 const session = neo4j.session();
 const ApiErrors = require('../model/apiErrors');
 const jsonModel = require('../model/JsonResponseModel');

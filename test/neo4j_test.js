@@ -1,5 +1,5 @@
 const assert = require('assert');
-const driver = require('../neo4jdriver');
+const driver = require('../connections/neo4jdriver_test');
 
 describe('Neo4j', () => {
     it('saves a node', (done) => {

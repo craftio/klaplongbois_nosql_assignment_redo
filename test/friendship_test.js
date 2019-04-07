@@ -2,8 +2,8 @@
 const assert = require('assert');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const server = require('../test_index');
-const driver = require('../neo4jdriver');
+const server = require('../index_test');
+const driver = require('../connections/neo4jdriver');
 
 chai.use(chaiHttp);
 chai.should();
@@ -18,6 +18,7 @@ describe('Friendship test(s)', () => {
         const person1 = 'Björn';
         const person2 = 'Sam';
         const session = driver.session();
-        session
+        session.close();
+        done();
     });
 });
