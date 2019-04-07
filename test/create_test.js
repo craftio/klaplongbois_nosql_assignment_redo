@@ -12,20 +12,11 @@ const User = require('../src/user');
 const user = require('../data/userRepo');
 
 // TESTS
-describe('Creating records', () => {
+xdescribe('Creating records', () => {
     it('saves a user', (done) => {
-        const craftio = new User({
-            username: 'TestUser',
-            password: 'Diam0nd',
-            threads: [],
-            comments: []
-        });
-
-        craftio.save()
-            .then(() => {
-                assert(!craftio.isNew);
-                done();
-            });
+        chai.request(server)
+            .post('/api/users')
+            .send({ username: ''})
     });
 
     it('can\'t create multiple users with the same username', (done) => {
