@@ -15,6 +15,8 @@ server.post("/users", (req, res) => {
     let username = req.body.username;
     let password = req.body.password;
 
+    res.json(new jsonModel("...", "POST", 400, username + " - " + password));
+
     try {
         // Both username and password are put in.
         if (checkNullOrUndefined(username) && checkNullOrUndefined(password)) {
