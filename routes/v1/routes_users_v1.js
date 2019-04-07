@@ -44,14 +44,14 @@ server.get("/users", (req, res) => {
 });
 
 // Get a specific user by ID
-server.get("/users/:userId", (req, res) => {
+/**server.get("/users/:userId", (req, res) => {
     let id = req.param("userId");
     try {
     res.json(new jsonModel("/api/user/:id", "GET", 200, "get a specific user"));
     } catch (error) {
         res.json(error);
     }
-});
+});*/
 
 // Change password
 server.put("/users", (req, res) => {
