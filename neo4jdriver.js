@@ -1,5 +1,6 @@
-const NEO4J_USERNAME = 'projectuser-craftio';
-const NEO4J_PASSWORD = 'b.ZQh9KmgWgOPc.2HEPtos6BOBtcmLs';
+// Best practice would be to do this in environment variables.
+const NEO4J_USERNAME = 'redoneo';
+const NEO4J_PASSWORD = 'b.cQB8gxmtJavx.akme3ztHzNbpOj5t';
 
 const neo4j = require('neo4j-driver').v1;
 
