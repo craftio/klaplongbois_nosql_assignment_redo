@@ -9,26 +9,6 @@ server.use("/", (req, res, next) => {
     next();
 });
 
-// Get all threads
-server.get("/threads", (req, res) => {
-    try {
-
-        thread.getAllThreads(res);
-    } catch (error) {
-        res.json(error);
-    }
-});
-
-// Get a specific thread
-server.get("/threads/:threadId", (req, res) => {
-    let threadId = req.params.threadId;
-    try {
-        thread.getSingleThread(threadId, res);
-    } catch (error) {
-        res.json(error);
-    }
-});
-
 // Create a thread
 server.post("/threads", (req, res) => {
     let title = req.body.title;
@@ -42,6 +22,25 @@ server.post("/threads", (req, res) => {
         } else {
             res.json(new jsonModel("/api/user", "POST", 400, "Missing at least one of mandatory fields 'title', 'content' and 'username'"));
         }
+    } catch (error) {
+        res.json(error);
+    }
+});
+
+// Get all threads
+server.get("/threads", (req, res) => {
+    try {
+        thread.getAllThreads(res);
+    } catch (error) {
+        res.json(error);
+    }
+});
+
+// Get a specific thread
+server.get("/threads/:threadId", (req, res) => {
+    let threadId = req.params.threadId;
+    try {
+        thread.getSingleThread(threadId, res);
     } catch (error) {
         res.json(error);
     }
