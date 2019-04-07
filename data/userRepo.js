@@ -47,7 +47,7 @@ module.exports = class StudditUser {
                 }
             })
             .catch(() => {
-                response.status(422).json(new jsonModel("/api/users", "PUT", 422, "User " + usernameParam + " not found"));
+                response.status(400).json(new jsonModel("/api/users", "PUT", 400, "User " + usernameParam + " not found"));
             });
     };
 

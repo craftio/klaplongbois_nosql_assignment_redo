@@ -13,7 +13,7 @@ describe('Creating friendships', () => {
             .post('/api/friendships')
             .send({"name": "test1", "friendname": "test2"})
             .end((err, res) => {
-                res.should.have.status(200);
+                res.body.statuscode.should.be.equal(200);
                 done();
             })
     });
@@ -23,7 +23,7 @@ describe('Creating friendships', () => {
             .post('/api/friendships')
             .send({"name": "doesnotexist", "friendname": "test2"})
             .end((err, res) => {
-                res.should.have.status(422);
+                res.body.statuscode.should.be.equal(422);
                 done();
             })
     });
@@ -31,9 +31,9 @@ describe('Creating friendships', () => {
     it('Should return a 422 when friendname does not exist', (done) => {
         chai.request(server)
             .post('/api/friendships')
-            .send({"name": "test1", "friendname": "doesnotexist"})
+            .send({"name": "test5", "friendname": "doesnotexist"})
             .end((err, res) => {
-                res.should.have.status(422);
+                res.body.statuscode.should.be.equal(422);
                 done();
             })
     })
@@ -44,7 +44,7 @@ describe('Reading friendships', () => {
         chai.request(server)
             .get('/api/friendships')
             .end((err, res) => {
-                res.should.have.status(200);
+                res.body.statuscode.should.be.equal(200);
                 done();
             })
     });
@@ -53,7 +53,7 @@ describe('Reading friendships', () => {
         chai.request(server)
             .get('/api/friendships')
             .end((err, res) => {
-                res.should.have.status(200);
+                res.body.statuscode.should.be.equal(200);
                 done();
             })
     })

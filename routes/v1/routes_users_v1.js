@@ -60,7 +60,7 @@ server.put("/users", (req, res) => {
     let newPassword = req.body.newPassword;
 
     try {
-        if (checkNullOrUndefined(username) && checkNullOrUndefined(currentPassword) && checkNullOrUndefined(newPassword)) {
+        if (checkNullOrUndefined(username) && !checkNullOrUndefined(currentPassword) && !checkNullOrUndefined(newPassword)) {
             user.changePassword(username, currentPassword, newPassword, res);
         } else if (checkNullOrUndefined(username) && checkNullOrUndefined(currentPassword)) {
             res.json(new jsonModel("/api/user", "POST", 400, "Missing mandatory field 'newPassword'"));

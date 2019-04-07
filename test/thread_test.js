@@ -21,7 +21,7 @@ describe('Creating records', () => {
             .post('/api/threads')
             .send({"title": "testThread", "content": "testcontent", "username": "testUser"})
             .end((err, res) => {
-                res.should.have.status(201);
+                res.body.statuscode.should.be.equal(201);
                 threadID = res.id;
                 done();
             })
@@ -33,7 +33,7 @@ describe('Creating records', () => {
             .post('/api/threads')
             .send({"title": null, "content": "testcontent", "username": "testUser"})
             .end((err, res) => {
-                res.should.have.status(400);
+                res.body.statuscode.should.be.equal(400);
                 done();
             })
     })
@@ -44,7 +44,7 @@ describe('Reading records', () => {
         chai.request(server)
             .get('/api/threads')
             .end((err, res) => {
-                res.should.have.status(200);
+                res.body.statuscode.should.be.equal(200);
                 done();
             })
     });
@@ -53,7 +53,7 @@ describe('Reading records', () => {
     //     chai.request(server)
     //         .get('/api/threads/')
     //         .end((err, res) => {
-    //             res.should.have.status(200)
+    //             res.body.statuscode.should.be.equal(200)
     //             done();
     //         })
     // })
@@ -65,7 +65,7 @@ describe('Updating records', () => {
             .put('/api/threads/' + threadID)
             .send({"threadId": threadID, "newContent": "New test content"})
             .end((err, res) => {
-                res.should.have.status(200);
+                res.body.statuscode.should.be.equal(200);
                 done();
             })
     });
@@ -75,7 +75,7 @@ describe('Updating records', () => {
             .put('/api/threads/' + threadID)
             .send({"threadId": threadID, "newContent": null})
             .end((err, res) => {
-                res.should.have.status(200);
+                res.body.statuscode.should.be.equal(200);
                 done();
             })
     });
@@ -87,7 +87,7 @@ describe('Deleting records', () => {
         chai.request(server)
             .delete('/api/threads/' + threadID)
             .end((err, res) => {
-                res.should.have.status(200);
+                res.body.statuscode.should.be.equal(200);
                 done();
             })
     });
@@ -96,7 +96,7 @@ describe('Deleting records', () => {
         chai.request(server)
             .delete('/api/threads/' + threadID)
             .end((err, res) => {
-                res.should.have.status(400);
+                res.body.statuscode.should.be.equal(400);
                 done();
             })
     })

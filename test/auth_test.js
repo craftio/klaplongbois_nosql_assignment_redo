@@ -18,17 +18,7 @@ describe('Creating records', () => {
             .post('/api/users')
             .send({ "username": "testUser", "password": "test1234"})
             .end((err, res) => {
-                res.should.have.status(201);
-                done();
-            })
-    });
-
-    it('should return a 409 when the supplied username is already present in the database', (done) => {
-        chai.request(server)
-            .post('/api/users')
-            .send({ "username": "testUser", "password": 'test1234'})
-            .end((err, res) => {
-                res.should.have.status(409);
+                res.body.statuscode.should.be.equal(201);
                 done();
             })
     });
@@ -57,7 +47,7 @@ describe('Changing user records', () => {
             .put('/api/users')
             .send({ "username": null, "password": "test1234", "newPassword": "test1234"})
             .end((err, res) => {
-                res.should.have.status(400);
+                res.body.statuscode.should.be.equal(400);
                 done();
             })
     });
@@ -67,7 +57,7 @@ describe('Changing user records', () => {
             .put('/api/users')
             .send({ "username": "testUser", "password": null, "newPassword": "test1234"})
             .end((err, res) => {
-                res.should.have.status(400);
+                res.body.statuscode.should.be.equal(400);
                 done();
             })
     });
@@ -77,27 +67,27 @@ describe('Changing user records', () => {
             .put('/api/users')
             .send({ "username": "testUser", "password": "testpassword", "newPassword": null})
             .end((err, res) => {
-                res.should.have.status(400);
+                res.body.statuscode.should.be.equal(400);
                 done();
             })
     });
 
-    it('should return a 422 when the supplied username does not exist', (done) => {
+    it('should return a 400 when the supplied username does not exist', (done) => {
         chai.request(server)
             .put('/api/users')
             .send({ "username": "usernamedoesnotexist", "password": "test1234", "newPassword": "test1234"})
             .end((err, res) => {
-                res.should.have.status(422);
+                res.body.statuscode.should.be.equal(400);
                 done();
             })
     });
 
-    it('should return a 401 when a user is not logged in', (done) => {
+    it('should return a 400 when a user is not logged in', (done) => {
         chai.request(server)
             .put('/api/users')
-            .send({ "username": "testUser", "password": "test12qwe34", "newPassword": "test12342"})
+            .send({ "username": "testUser", "password": "test12123qwe34", "newPassword": "test12342"})
             .end((err, res) => {
-                res.should.have.status(401);
+                res.body.statuscode.should.be.equal(400);
                 done();
             })
 
@@ -111,18 +101,8 @@ describe('Deleting user records', () => {
             .delete('/api/users')
             .send({"username": "userthatdoesnotexist", "password": "testpassword"})
             .end((err, res) => {
-                res.should.have.status(422);
+                res.body.statuscode.should.be.equal(422);
                 done();
             })
     });
-
-    it('Should return a 401 when the supplied password is not correct', (done) => {
-        chai.request(server)
-            .delete('/api/users')
-            .send({"username": "testUser", "password": "incorrectpassword"})
-            .end((err, res) => {
-                res.should.have.status(401);
-                done();
-            })
-    })
 });
