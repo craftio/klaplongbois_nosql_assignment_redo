@@ -13,10 +13,13 @@ const user = require('../data/userRepo');
 
 // TESTS
 xdescribe('Creating records', () => {
-    it('saves a user', (done) => {
+    it('saves a user in the database', (done) => {
         chai.request(server)
             .post('/api/users')
-            .send({ username: ''})
+            .send({ username: 'testUser', password: 'test1234'})
+            .end((err, res) => {
+                res.body.statuscode.should.be.equal(201);
+            })
     });
 
     it('can\'t create multiple users with the same username', (done) => {

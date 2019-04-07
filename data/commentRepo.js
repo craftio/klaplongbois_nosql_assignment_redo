@@ -6,8 +6,19 @@ const jsonModel = require('../model/JsonResponseModel');
 
 module.exports = class StudditComments {
 
-    static getSingleComment() {
-
+    static getSingleComment(usernameParam, res) {
+        User.findOne({ username: usernameParam})
+            .then((user) => {
+                if (user !== null && user !== undefined) {
+                    res.status(200).json({"username": user})
+                }
+                else {
+                    res.status(500).json(new jsonModel("/api/comments/:commentID", "GET", 500, "GET single comment", "User not found"))
+                }
+            })
+            .catch(() => {
+                res.status(404).json(new jsonModel("/api/comments/:commentID", "GET", 200, "GET single comment", "User not found"))
+            })
     }
 
     static addComment(id, content, usernameParam, res) {
