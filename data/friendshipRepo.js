@@ -1,5 +1,4 @@
 const neo4j = require('../connections/neo4jdriver');
-const session = neo4j.session();
 const ApiErrors = require('../model/apiErrors');
 const jsonModel = require('../model/JsonResponseModel');
 module.exports = class StudditFriendship {
@@ -8,13 +7,15 @@ module.exports = class StudditFriendship {
         const user1 = username1;
         const user2 = username2;
 
-        session.run('MATCH (a:User {name: $user1}) ', {'user1': user1}).then((res) => {
+        const session1 = neo4j.session();
+        session1.run('MATCH (a:User {name: $user1}) ', {'user1': user1}).then((res) => {
             res.records.forEach((record) => {
 
             });
-            session.close();
+            session1.close();
         }).catch((err) => {
-            session.close();
+            session1.close();
+            const session = neo4j.session();
             session.run('CREATE (a:User {name: $user1})', {'name': user1})
                 .then((res) => {
                     res.records.forEach((record) => {
@@ -26,14 +27,16 @@ module.exports = class StudditFriendship {
             });
         });
 
-        session.run('MATCH (a:User {name: $user2}) ', {'user2': user2})
+        const session2 = neo4j.session();
+        session2.run('MATCH (a:User {name: $user2}) ', {'user2': user2})
             .then((res) => {
                 res.records.forEach((record) => {
 
                 });
-            session.close();
+            session2.close();
         }).catch((err) => {
-            session.close();
+            session2.close();
+            const session = neo4j.session();
             session.run('CREATE (a:User {name: $user2})', {'name': user2})
                 .then((res) => {
                     res.records.forEach((record) => {
@@ -41,20 +44,21 @@ module.exports = class StudditFriendship {
                     });
                     session.close();
                 }).catch((err) => {
-
+                    session.close();
             });
         });
 
-        session.run('MATCH (a:User {name: $user1}) ' +
+        const session3 = neo4j.session();
+        session3.run('MATCH (a:User {name: $user1}) ' +
                     'MATCH (b:User {name: %user2}) ' +
                     'MERGE (a)-[f:FRIEND]-(b)', {'user1': user1, 'user2': user2})
             .then((res) => {
                 res.records.forEach((record) => {
 
                 });
-                session.close();
+                session3.close();
             }).catch((err) => {
-
+                session3.close();
         });
 
         res.status(200).json(new jsonModel("/api/friendships", "POST", 200, "A friendship has been established between " + user1 + " and " + user2));
