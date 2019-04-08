@@ -1,7 +1,9 @@
 const assert = require('assert');
-const driver = require('../connections/neo4jdriver_test');
+const neo4j = require('neo4j-driver').v1;
+const driver = neo4j.driver('bolt://hobby-bmgmbaaccbcogbkeoajgggcl.dbs.graphenedb.com:24786',
+    neo4j.auth.basic('redone', 'b.cQB8gxmtJavx.akme3ztHzNbpOj5t'));
 
-xdescribe('Neo4j', () => {
+describe('Neo4j', () => {
     it('saves a node', (done) => {
         const personName = 'Bob';
         let session = driver.session();

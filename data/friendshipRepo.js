@@ -10,7 +10,7 @@ module.exports = class StudditFriendship {
         const user2 = username2;
 
         const session1 = driver.session();
-        session1.run('MATCH (a:User {name: $name}) ', {name: user1}).then((resu1) => {
+        session1.run('MATCH (a:User {name: $name}) RETURN a', {name: user1}).then((resu1) => {
             resu1.records.forEach((record) => {
 
             });
@@ -18,7 +18,7 @@ module.exports = class StudditFriendship {
         }).catch((err) => {
             session1.close();
             const session = driver.session();
-            session.run('CREATE (a:User {name: $name})', {name: user1})
+            session.run('CREATE (a:User {name: $name}) RETURN a', {name: user1})
                 .then((resu) => {
                     resu.records.forEach((record) => {
 
@@ -30,7 +30,7 @@ module.exports = class StudditFriendship {
         });
 
         const session2 = driver.session();
-        session2.run('MATCH (a:User {name: $name}) ', {name: user2})
+        session2.run('MATCH (a:User {name: $name}) RETURN a', {name: user2})
             .then((resu2) => {
                 resu2.records.forEach((record) => {
 
@@ -39,7 +39,7 @@ module.exports = class StudditFriendship {
         }).catch((err) => {
             session2.close();
             const session = driver.session();
-            session.run('CREATE (a:User {name: $name})', {name: user2})
+            session.run('CREATE (a:User {name: $name}) RETURN a', {name: user2})
                 .then((resu) => {
                     resu.records.forEach((record) => {
 
