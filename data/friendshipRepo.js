@@ -10,8 +10,8 @@ module.exports = class StudditFriendship {
         const user2 = username2;
 
         const session1 = driver.session();
-        session1.run('MATCH (a:User {name: $user1}) ', {'user1': user1}).then((res) => {
-            res.records.forEach((record) => {
+        session1.run('MATCH (a:User {name: $user1}) ', {'user1': user1}).then((res1) => {
+            res1.records.forEach((record) => {
 
             });
             session1.close();
@@ -31,8 +31,8 @@ module.exports = class StudditFriendship {
 
         const session2 = driver.session();
         session2.run('MATCH (a:User {name: $user2}) ', {'user2': user2})
-            .then((res) => {
-                res.records.forEach((record) => {
+            .then((res2) => {
+                res2.records.forEach((record) => {
 
                 });
             session2.close();
