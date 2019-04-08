@@ -52,7 +52,7 @@ module.exports = class StudditFriendship {
 
         const session3 = driver.session();
         session3.run('MATCH (a:User {name: $user1}) ' +
-                    'MATCH (b:User {name: %user2}) ' +
+                    'MATCH (b:User {name: $user2}) ' +
                     'MERGE (a)-[f:FRIEND]-(b)', {'user1': user1, 'user2': user2})
             .then((res) => {
                 res.records.forEach((record) => {
@@ -64,25 +64,11 @@ module.exports = class StudditFriendship {
         });
 
         res.status(200).json(new jsonModel("/api/friendships", "POST", 200, "A friendship has been established between " + user1 + " and " + user2));
-
-        /**
-        session.run('MATCH (a:User {user: "' + user + '"}) ' +  'MATCH (b:User {user: "' + friend + '"}) ' +
-                'MERGE (a)-[:FRIENDS_WITH]-(b)')
-            .then((result) => {
-                result.records.forEach((record) => {});
-                session.close();
-                res.status(200).json(new jsonModel("/api/friendships", "POST", 200, "A friendship has been established between " + user + " and " + friend));
-            })
-            .catch((error) => {
-                res.status(422).json(new jsonModel("/api/friendships", "POST", 422,  user + " or " + friend + " does not exist"));
-                console.log(error);
-            });
-         */
     }
 
-    static deleteFriendship(username, friendUsername, res) {
-        const user = username;
-        const friend = friendUsername;
+    static deleteFriendship(username1, username2, res) {
+        const user1 = username1;
+        const user2 = username2;
 
         session
             .run('MATCH (a:User {username: "'+ user +'"}) ' +'MATCH (b:User {username: "'+ friend +'"}) ' +'MATCH (a)-[r]-(b) ' +'DELETE r')
