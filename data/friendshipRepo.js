@@ -10,7 +10,7 @@ module.exports = class StudditFriendship {
         const user2 = username2;
 
         const session1 = driver.session();
-        session1.run('MATCH (a:User {name: $user1}) ', {'user1': user1}).then((resu1) => {
+        session1.run('MATCH (a:User {name: $name}) ', {name: user1}).then((resu1) => {
             resu1.records.forEach((record) => {
 
             });
@@ -18,7 +18,7 @@ module.exports = class StudditFriendship {
         }).catch((err) => {
             session1.close();
             const session = driver.session();
-            session.run('CREATE (a:User {name: $name})', {'name': user1})
+            session.run('CREATE (a:User {name: $name})', {name: user1})
                 .then((resu) => {
                     resu.records.forEach((record) => {
 
@@ -30,7 +30,7 @@ module.exports = class StudditFriendship {
         });
 
         const session2 = driver.session();
-        session2.run('MATCH (a:User {name: $user2}) ', {'user2': user2})
+        session2.run('MATCH (a:User {name: $name}) ', {name: user2})
             .then((resu2) => {
                 resu2.records.forEach((record) => {
 
@@ -39,7 +39,7 @@ module.exports = class StudditFriendship {
         }).catch((err) => {
             session2.close();
             const session = driver.session();
-            session.run('CREATE (a:User {name: $name})', {'name': user2})
+            session.run('CREATE (a:User {name: $name})', {name: user2})
                 .then((resu) => {
                     resu.records.forEach((record) => {
 
@@ -53,7 +53,7 @@ module.exports = class StudditFriendship {
         const session3 = driver.session();
         session3.run('MATCH (a:User {name: $user1}) ' +
                     'MATCH (b:User {name: $user2}) ' +
-                    'MERGE (a)-[f:FRIEND]-(b)', {'user1': user1, 'user2': user2})
+                    'MERGE (a)-[f:FRIEND]-(b)', {user1: user1, user2: user2})
             .then((resu) => {
                 resu.records.forEach((record) => {
 
@@ -81,6 +81,6 @@ module.exports = class StudditFriendship {
                 session.close();
         });
 
-        res.json(new jsonModel());
+        res.status(200).json(new jsonModel("/api/friendships", "DELETE", 200, "Friendship succesfully deleted."));
     }
 };
