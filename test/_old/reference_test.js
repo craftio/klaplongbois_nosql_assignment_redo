@@ -1,7 +1,7 @@
 const assert = require('assert');
-const User = require('../src/user');
-const Thread = require('../src/thread');
-const Comment = require('../src/comment');
+const User = require('../../src/user');
+const Thread = require('../../src/thread');
+const Comment = require('../../src/comment');
 
 xdescribe('References', () => {
     let creator, testThread;

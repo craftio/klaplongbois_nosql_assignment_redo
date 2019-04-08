@@ -38,7 +38,7 @@ server.post("/comments/:threadId", (req, res) => {
        if (checkNullOrUndefined(id) && checkNullOrUndefined(username) && checkNullOrUndefined(content)) {
            comment.addComment(id, content, username, res);
        } else {
-           res.json(new jsonModel("/api/user", "POST", 400, "Missing at least one of mandatory fields 'username' and 'content'."));
+           res.status(400).json(new jsonModel("/api/user", "POST", 400, "Missing at least one of mandatory fields 'username' and 'content'."));
        }
    } catch (error) {
        res.json(error);

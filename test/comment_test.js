@@ -7,8 +7,7 @@ const server = require('../index_test');
 chai.use(chaiHttp);
 chai.should();
 
-const Comment = require('../src/comment');
-const commentRepo = require('../data/commentRepo');
+const Thread = require('../src/thread');
 
 let threadId;
 let commentId;
@@ -16,25 +15,76 @@ let commentId;
 describe('Creating comments', () => {
 
     it('Should return a 201 on succesfully creating a comment', (done) => {
-        let comment = commentRepo.getSingleComment("testUser");
-        threadId = comment.thread;
         chai.request(server)
-            .post('/api/comments/' + threadID)
-            .send({"postedBy": "testUser", "onThread":"12313", "content": "testcontent"})
-            .end((err, res) => {
-                res.body.statuscode.should.be.equal(201);
-                done();
+            .post('/api/users')
+            .send({
+                "username": "commentTest1",
+                "password": "password"
             })
+            .end((err, res) => {
+                chai.request(server)
+                    .post('/api/threads')
+                    .send({
+                        "title": "Comment Test 1",
+                        "content": "content",
+                        "username": "commentTest1"
+                    })
+                    .end((err, res) => {
+                        Thread.find()
+                            .then((docs1) => {
+                                chai.request(server)
+                                    .post('/api/comments/' + docs1[0]._id)
+                                    .send({
+                                        "username": "commentTest1",
+                                        "content": "content"
+                                    })
+                                    .end((err, res) => {
+                                        Thread.find()
+                                            .then((docs2) => {
+                                                res.should.have.status(201);
+                                                assert(docs2[0].comments[0].content === "content");
+                                                done();
+                                            });
+                                    })
+                            })
+                    })
+            });
     });
 
-    it('Should return a 400 if on of the required comment fields is missing', (done) => {
+    it('Should return a 400 if one of the required comment fields is missing', (done) => {
         chai.request(server)
-            .post('/api/comments/:threadID')
-            .send({"postedBy": "testUser", "onThread": null, "content": "testcontent"})
-            .end((err, res) => {
-                res.body.statuscode.should.be.equal(400);
-                done();
+            .post('/api/users')
+            .send({
+                "username": "commentTest2",
+                "password": "password"
             })
+            .end((err, res) => {
+                chai.request(server)
+                    .post('/api/threads')
+                    .send({
+                        "title": "Comment Test 2",
+                        "content": "content",
+                        "username": "commentTest2"
+                    })
+                    .end((err, res) => {
+                        Thread.find()
+                            .then((docs1) => {
+                                chai.request(server)
+                                    .post('/api/comments/' + docs1[0]._id)
+                                    .send({
+                                        "username": "commentTest2"
+                                    })
+                                    .end((err, res) => {
+                                        Thread.find()
+                                            .then((docs2) => {
+                                                res.should.have.status(400);
+                                                assert(docs2[0].comments[0] === undefined);
+                                                done();
+                                            });
+                                    });
+                            });
+                    });
+            });
     });
 });
 

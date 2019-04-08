@@ -32,7 +32,7 @@ module.exports = class StudditComments {
                         });
                         thread.save()
                             .then(() => {
-                                res.status(200).json(new jsonModel("/api/comments/threadId", "POST", 200, "Succesfully commented on thread."));
+                                res.status(201).json(new jsonModel("/api/comments/threadId", "POST", 201, "Succesfully commented on thread."));
                             });
                     })
                     .catch(() => {

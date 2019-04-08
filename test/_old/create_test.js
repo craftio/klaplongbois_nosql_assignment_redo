@@ -2,14 +2,14 @@
 const assert = require('assert');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const server = require('../index_test');
+const server = require('../../index_test');
 
 chai.use(chaiHttp);
 chai.should();
 
 // CONFIGURATIONS
-const User = require('../src/user');
-const user = require('../data/userRepo');
+const User = require('../../src/user');
+const user = require('../../data/userRepo');
 
 // TESTS
 xdescribe('Creating records', () => {
