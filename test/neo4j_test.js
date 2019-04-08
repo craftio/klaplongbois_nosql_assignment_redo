@@ -1,7 +1,7 @@
 const assert = require('assert');
 const driver = require('../connections/neo4jdriver_test');
 
-describe('Neo4j', () => {
+xdescribe('Neo4j', () => {
     it('saves a node', (done) => {
         const personName = 'Bob';
         let session = driver.session();

@@ -10,7 +10,7 @@ module.exports = class StudditThread {
     static getSingleThread(id, res) {
         Thread.find({ _id: id }).populate('user')
             .then((doc) => {
-                res.status(201).json(new jsonModel("/api/threads/:id", "GET", 201, "Showing thread: " + doc._id, doc));
+                res.status(201).json(new jsonModel("/api/threads/:id", "GET", 201, "Showing thread: " + id, doc));
             })
             .catch(() => {
                 res.status(404).json(ApiErrors.notFound());
