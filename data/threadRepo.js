@@ -46,7 +46,7 @@ module.exports = class StudditThread {
     }
 
     static getAllThreads(res) {
-        Thread.find({}, 'title, content, user, votings', (err, docs) => {
+        Thread.find({}, 'title content user votings', (err, docs) => {
             res.status(201).json(new jsonModel("/api/threads", "GET", 201, "Showing all threads:", docs));
         });
     }
