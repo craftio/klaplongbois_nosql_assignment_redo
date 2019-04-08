@@ -18,7 +18,7 @@ module.exports = class StudditFriendship {
         }).catch((err) => {
             session1.close();
             const session = driver.session();
-            session.run('CREATE (a:User {name: $user1})', {'name': user1})
+            session.run('CREATE (a:User {name: $name})', {'name': user1})
                 .then((res) => {
                     res.records.forEach((record) => {
 
@@ -39,7 +39,7 @@ module.exports = class StudditFriendship {
         }).catch((err) => {
             session2.close();
             const session = driver.session();
-            session.run('CREATE (a:User {name: $user2})', {'name': user2})
+            session.run('CREATE (a:User {name: $name})', {'name': user2})
                 .then((res) => {
                     res.records.forEach((record) => {
 
