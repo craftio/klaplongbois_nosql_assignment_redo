@@ -51,8 +51,14 @@ module.exports = class StudditComments {
                 thread.comments.pull(mongoose.Types.ObjectId(id));
                 thread.save()
                     .then(() => {
-                        res.status(200).json(new jsonModel("/api/comments/:id", "DELETE", 200, "Succesfully deleted comment."));
+                        res.status(200).json(new jsonModel("/api/comments/:threadId/:commentId", "DELETE", 200, "Succesfully deleted comment."));
                     })
+                    .catch((err) => {
+                        res.status(422).json(new jsonModel("/api/comments/:threadId/:commentId", "DELETE", 422, "We could not find that thread with that comment."))
+                    })
+            })
+            .catch((err) => {
+                res.status(422).json(new jsonModel("/api/comments/:threadId/:commentId", "DELETE", 422, "We could not find that thread with that comment."))
             })
     }
 };

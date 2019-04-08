@@ -156,7 +156,15 @@ describe('Deleting comments', () => {
                                         Thread.find()
                                             .then((docs2) => {
                                                 chai.request(server)
-                                                    .delete('/api/comments/')
+                                                    .delete('/api/comments/' + docs2[0]._id + '/' + docs2[0].comments[0]._id)
+                                                    .end((err, res) => {
+                                                        Thread.find()
+                                                            .then((docs3) => {
+                                                                res.json.should.have.status(200);
+                                                                assert(docs3[0].comments[0] === null);
+                                                                done();
+                                                            })
+                                                    })
                                             });
                                     });
                             });
