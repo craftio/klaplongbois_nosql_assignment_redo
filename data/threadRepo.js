@@ -46,28 +46,9 @@ module.exports = class StudditThread {
     }
 
     static getAllThreads(res) {
-        let threadArray = [];
-        User.find().populate("threads")
-            .then((users) => {
-                for (let user of users) {
-                    if (user.threads) {
-                        for (let thread of user.threads) {
-                            threadArray.push({
-                                "_id": thread.id,
-                                "title": thread.title,
-                                "content": thread.content,
-                                "upvotes": thread.upvotes.length,
-                                "downvotes": thread.downvotes.length,
-                                "createdBy": user.username
-                            })
-                        }
-                    }
-                }
-                res.status(200).json({"threads": threadArray});
-            })
-            .catch(() => {
-                res.status(404).json(ApiErrors.notFound());
-            });
+        Thread.find({}, (err, docs) => {
+            res.status(201).json(new jsonModel("/api/threads", "GET", 201, "Showing all threads:", docs));
+        });
     }
 
     static createThread(title, content, usernameParam, res) {
@@ -77,11 +58,10 @@ module.exports = class StudditThread {
                 if (user !== null && user !== undefined) {
                     const newThread = new Thread({
                         title: title,
-                        content: content
+                        content: content,
+                        user: user
                     });
-
-                    user.threads.push(newThread);
-                    Promise.all([user.save(), newThread.save()])
+                    newThread.save()
                         .then(() => {
                             res.status(201).json(new jsonModel("/api/threads", "POST", 201, "The thread has been succesfully created."));
                         })
@@ -117,18 +97,14 @@ module.exports = class StudditThread {
         let myThread = Thread;
         myThread.findOne({ _id: id })
             .then((thread) => {
-                if (thread) {
+                if (thread !== null) {
                     thread.remove()
                         .then(() => {
-                            User.findOneAndUpdate({ username }, { $pull: { "threads": id } })
-                                .then(() => {
-                                    comment.deleteCommentsFromThread(id);
-                                })
-                                .catch(() => {
-                                    res.status(500).json(ApiErrors.internalServerError());
-                                })
+                            res.status(200).json(new jsonModel("/api/threads/" + id, "DELETE", 200, "Thread removed"))
+                        })
+                        .catch(() => {
+                            res.status(500).json(ApiErrors.internalServerError());
                         });
-                res.status(200).json(new jsonModel("/api/threads/" + id, "DELETE", 200, "Thread removed"))
                 } else {
                     res.status(404).json(new jsonModel("/api/threads/" + id, "DELETE", 422, "Thread does not exist"));
                 }
