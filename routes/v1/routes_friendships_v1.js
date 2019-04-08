@@ -11,8 +11,6 @@ server.use("/", (req, res, next) => {
 // Get all friendships
 server.get("/friendships", (req, res) => {
     try {
-
-
         res.status(200);
         res.json(new jsonModel("/api/friendships", "GET", 200, "test"));
     } catch (error) {
@@ -24,8 +22,6 @@ server.get("/friendships", (req, res) => {
 server.get("/friendships/:friendshipId", (req, res) => {
     let friendshipId = req.params.friendshipId;
     try {
-
-
         res.status(200);
         res.json(new jsonModel("api/friendships/friendshipId", "GET", 200, "test"));
     } catch (error) {
@@ -35,13 +31,17 @@ server.get("/friendships/:friendshipId", (req, res) => {
 
 // Create a friendship
 server.post("/friendships", (req, res) => {
-    let username = req.body.name;
-    let friendusername = req.body.friendname;
-    try {
+    let user1 = req.body.user1;
+    let user2 = req.body.user2;
 
-        friendship.createFriendship(username, friendusername, res);
-    } catch (error) {
-        res.json(error);
+    if (checkNullOrUndefined(user1) && checkNullOrUndefined(user2)) {
+        try {
+            friendship.createFriendship(user1, user2, res);
+        } catch (error) {
+            res.json(error);
+        }
+    } else {
+        res.status(400).json(new jsonModel('/api/friendships', "POST", 400, "Missing at least one of the mandatory fields 'user1' and 'user2'."));
     }
 });
 
@@ -67,5 +67,12 @@ server.delete("/friendships", (req, res) => {
        res.json(error);
     }
 });
+
+function checkNullOrUndefined(param) {
+    if (param !== null && param !== undefined) {
+        return true;
+    }
+    return false;
+}
 
 module.exports = (server);
