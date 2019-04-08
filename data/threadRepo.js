@@ -8,37 +8,9 @@ const comment = require('./commentRepo');
 module.exports = class StudditThread {
 
     static getSingleThread(id, res) {
-        let singleThreadArray = [];
-        let commentArray = [];
-        let replyArray = [];
-
-        User.find().populate({
-            path: "threads",
-            populate: {
-                path: "comments",
-                model: "comment"
-            }
-        })
-            .then((users) => {
-                for (let user of users) {
-                    if (user.threads) {
-                        for (let thread of user.threads) {
-                            if (thread.id == id) {
-                                singleThreadArray.push({
-                                    "_id": thread.id,
-                                    "title": thread.title,
-                                    "content": thread.content,
-                                    "upvotes": thread.upvotes.length,
-                                    "downvotes": thread.downvotes.length,
-                                    "createdBy": user.username
-                                });
-                                res.status(200).json({"thread": singleThreadArray, "comments": thread.comments});
-                            }
-                        }
-                    } else {
-                        res.status(422).json(new jsonModel("/api/threads", "GET", 422, "Thread does not exist"));
-                    }
-                }
+        Thread.find({ _id: id }).populate('user')
+            .then((doc) => {
+                res.status(201).json(new jsonModel("/api/threads/:id", "GET", 201, "Showing thread: " + doc._id, doc));
             })
             .catch(() => {
                 res.status(404).json(ApiErrors.notFound());
