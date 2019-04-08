@@ -1,4 +1,6 @@
-const neo4j = require('../connections/neo4jdriver');
+const neo4j = require('neo4j-driver').v1;
+const driver = neo4j.driver('bolt://hobby-bmgmbaaccbcogbkeoajgggcl.dbs.graphenedb.com:24786',
+    neo4j.auth.basic('redone', 'b.cQB8gxmtJavx.akme3ztHzNbpOj5t'));
 const ApiErrors = require('../model/apiErrors');
 const jsonModel = require('../model/JsonResponseModel');
 module.exports = class StudditFriendship {
@@ -7,7 +9,7 @@ module.exports = class StudditFriendship {
         const user1 = username1;
         const user2 = username2;
 
-        const session1 = neo4j.session();
+        const session1 = driver.session();
         session1.run('MATCH (a:User {name: $user1}) ', {'user1': user1}).then((res) => {
             res.records.forEach((record) => {
 
@@ -15,7 +17,7 @@ module.exports = class StudditFriendship {
             session1.close();
         }).catch((err) => {
             session1.close();
-            const session = neo4j.session();
+            const session = driver.session();
             session.run('CREATE (a:User {name: $user1})', {'name': user1})
                 .then((res) => {
                     res.records.forEach((record) => {
@@ -27,7 +29,7 @@ module.exports = class StudditFriendship {
             });
         });
 
-        const session2 = neo4j.session();
+        const session2 = driver.session();
         session2.run('MATCH (a:User {name: $user2}) ', {'user2': user2})
             .then((res) => {
                 res.records.forEach((record) => {
@@ -36,7 +38,7 @@ module.exports = class StudditFriendship {
             session2.close();
         }).catch((err) => {
             session2.close();
-            const session = neo4j.session();
+            const session = driver.session();
             session.run('CREATE (a:User {name: $user2})', {'name': user2})
                 .then((res) => {
                     res.records.forEach((record) => {
@@ -48,7 +50,7 @@ module.exports = class StudditFriendship {
             });
         });
 
-        const session3 = neo4j.session();
+        const session3 = driver.session();
         session3.run('MATCH (a:User {name: $user1}) ' +
                     'MATCH (b:User {name: %user2}) ' +
                     'MERGE (a)-[f:FRIEND]-(b)', {'user1': user1, 'user2': user2})
