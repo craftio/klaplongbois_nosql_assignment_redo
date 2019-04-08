@@ -45,19 +45,9 @@ module.exports = class StudditComments {
     }
 
     static deleteComment(id, threadId, res) {
-        Comment.findOneAndDelete({_id: id})
-            .then(() => {
-                Thread.findOneAndUpdate({_id: threadId}, {$pull: {"comments": id}})
-                    .then(() => {
-                        res.status(200).json(new jsonModel("/api/comments/" + id, "DELETE", 200, "Comment has been succesfully deleted"));
-                    })
-                    .catch(() => {
-                            res.status(500).json(ApiErrors.internalServerError());
-                        }
-                    )
-                    .catch(() => {
-                        res.status(422).json(new jsonModel("/api/comments/" + id, "DELETE", 422, "Comment not found"));
-                    })
+        Thread.findById(threadId)
+            .then((thread) => {
+
             })
     }
 

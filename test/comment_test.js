@@ -110,6 +110,9 @@ describe('Reading comments', () => {
     });
 });
 
+/**
+ * We do not update comments.
+ *
 describe('Updating comments', () => {
 
     it('Should return on a 200 on succesfully updating a comment', (done) => {
@@ -122,15 +125,43 @@ describe('Updating comments', () => {
             })
     })
 });
+ */
 
 describe('Deleting comments', () => {
     it('Should return a 200 on successfully deleting a comment', (done) => {
         chai.request(server)
-            .post('/api/comments/1/1')
-            .end((err, res) => {
-                res.body.statuscode.should.be.equal(200);
-                done();
+            .post('/api/users')
+            .send({
+                "username": "commentTest2",
+                "password": "password"
             })
+            .end((err, res) => {
+                chai.request(server)
+                    .post('/api/threads')
+                    .send({
+                        "title": "Comment Test 2",
+                        "content": "content",
+                        "username": "commentTest2"
+                    })
+                    .end((err, res) => {
+                        Thread.find()
+                            .then((docs1) => {
+                                chai.request(server)
+                                    .post('/api/comments/' + docs1[0]._id)
+                                    .send({
+                                        "username": "commentTest2",
+                                        "content": "content"
+                                    })
+                                    .end((err, res) => {
+                                        Thread.find()
+                                            .then((docs2) => {
+                                                chai.request(server)
+                                                    .delete('/api/comments/')
+                                            });
+                                    });
+                            });
+                    });
+            });
     });
 
     it('Should return a 400 when one of the required fields is missing', (done) => {
