@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const User = require('../src/user');
 const Thread = require('../src/thread');
 const Comment = require('../src/comment');
@@ -47,12 +48,12 @@ module.exports = class StudditComments {
     static deleteComment(id, threadId, res) {
         Thread.findById(threadId)
             .then((thread) => {
-
+                thread.comments.pull(mongoose.Types.ObjectId(id));
+                thread.save()
+                    .then(() => {
+                        res.status(200).json(new jsonModel("/api/comments/:id", "DELETE", 200, "Succesfully deleted comment."));
+                    })
             })
-    }
-
-    static deleteCommentsFromThread(threadId) {
-        Comment.findOneAndDelete({ onThread: { $in: threadId }});
     }
 };
 
